@@ -22,17 +22,18 @@ export const uploadImage = async (imageFile) => {
                 'Content-Type': 'multipart/form-data'
             }
         });
-        return response.data.filename;
+        return response.data; // 確保返回的數據包含 filename 和 timestamp
     } catch (error) {
         throw new Error('Error uploading image');
     }
 };
 
-export const generateImages = async (projectName, selectedAudiences, uploadedImageFilename) => {
+export const generateImages = async (projectName, selectedAudiences, uploadedImageFilename, timestamp) => {
     const formData = new FormData();
     formData.append('project_name', projectName);
     formData.append('target_audience', selectedAudiences.join(','));
     formData.append('product_image_filename', uploadedImageFilename);
+    formData.append('timestamp', timestamp);
 
     try {
         const response = await axios.post(`${apiDomain}/api/generate-images`, formData, {

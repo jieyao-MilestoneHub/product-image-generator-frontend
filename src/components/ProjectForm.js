@@ -8,6 +8,7 @@ const ProjectForm = ({ onImagesGenerated }) => {
     const [selectedAudiences, setSelectedAudiences] = useState([]);
     const [productImage, setProductImage] = useState(null);
     const [uploadedImageFilename, setUploadedImageFilename] = useState('');
+    const [timestamp, setTimestamp] = useState('');
     const [targetOptions, setTargetOptions] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
@@ -31,8 +32,10 @@ const ProjectForm = ({ onImagesGenerated }) => {
 
         setIsLoading(true);
         try {
-            const filename = await uploadImage(imageFile);
-            setUploadedImageFilename(filename);
+            const response = await uploadImage(imageFile);
+            console.log('Image upload response:', response);
+            setUploadedImageFilename(response.filename);
+            setTimestamp(response.timestamp);
         } catch (error) {
             setError("上傳圖片失敗。");
         }
@@ -40,14 +43,15 @@ const ProjectForm = ({ onImagesGenerated }) => {
     };
 
     const handleSubmit = async () => {
-        if (!projectName || selectedAudiences.length === 0 || !uploadedImageFilename) {
+        console.log('Submitting form with:', { projectName, selectedAudiences, uploadedImageFilename, timestamp });
+        if (!projectName || selectedAudiences.length === 0 || !uploadedImageFilename || !timestamp) {
             alert("所有資訊都是必填/選的！");
             return;
         }
 
         setIsLoading(true);
         try {
-            const generatedImages = await generateImages(projectName, selectedAudiences, uploadedImageFilename);
+            const generatedImages = await generateImages(projectName, selectedAudiences, uploadedImageFilename, timestamp);
             if (typeof onImagesGenerated === 'function') {
                 onImagesGenerated(generatedImages);
             } else {
