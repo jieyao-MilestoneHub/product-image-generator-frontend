@@ -12,10 +12,11 @@ const GeneratedImages = ({ images }) => {
 
     return (
         <div className="generated-images">
+            <h2>生成素材圖片</h2>
             {generatedImages.length > 0 ? (
                 <div className="image-grid">
                     {generatedImages.map((image, index) => (
-                        <img key={index} src={`http://localhost:8000/generated/${image}`} alt={`Generated ${index}`} />
+                        <img key={index} src={`http://localhost:8000/static/${image}`} alt={`Generated ${index}`} />
                     ))}
                 </div>
             ) : (

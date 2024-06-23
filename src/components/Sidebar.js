@@ -13,19 +13,19 @@ const Sidebar = () => {
                 <li className={location.pathname === '/item1' ? 'active' : ''}>
                     <Link to="/item1">
                         <FaHome className="icon" />
-                        <span>選項一</span>
+                        <span>新增素材</span>
                     </Link>
                 </li>
                 <li className={location.pathname === '/item2' ? 'active' : ''}>
                     <Link to="/item2">
                         <FaProjectDiagram className="icon" />
-                        <span>選項二</span>
+                        <span>歷史紀錄</span>
                     </Link>
                 </li>
                 <li className={location.pathname === '/item3' ? 'active' : ''}>
                     <Link to="/item3">
                         <FaCog className="icon" />
-                        <span>選項三</span>
+                        <span>使用手冊</span>
                     </Link>
                 </li>
             </ul>

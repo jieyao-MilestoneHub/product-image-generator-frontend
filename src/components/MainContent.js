@@ -1,26 +1,16 @@
-import React, { useState } from 'react';
-import ProjectForm from './ProjectForm';
-import GeneratedImages from './GeneratedImages';
+import React from 'react';
+import NewProject from './NewProject';
+import History from './History';
+import Manual from './Manual';
 import '../styles/MainContent.css';
 
 const MainContent = ({ project }) => {
-    const [images, setImages] = useState([]);
-
-    const handleImagesGenerated = (newImages) => {
-        setImages(newImages);
-    };
-
     return (
         <div className="main-content">
             <div className="section">
-                <div className="form-section">
-                    <ProjectForm onImagesGenerated={handleImagesGenerated} project={project} />
-                </div>
-                <div className="divider"></div>
-                <div className="generated-images-section">
-                    <h2>生成的產品圖 ({project})</h2>
-                    <GeneratedImages images={images} />
-                </div>
+                {project === "新增素材" && <NewProject project={project} />}
+                {project === "歷史紀錄" && <History project={project} />}
+                {project === "使用手冊" && <Manual project={project} />}
             </div>
         </div>
     );

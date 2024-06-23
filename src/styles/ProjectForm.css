@@ -1,90 +1,117 @@
+/* 表單容器 */
 .project-form {
-    margin-bottom: 20px;
-    background-color: #fff;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* 表單標題 */
 .project-form h2 {
-    margin: 10px 0;
-    color: #333;
+    font-size: 18px;
+    color: #333333;
+    margin-bottom: 10px;
 }
 
-.required {
-    color: red;
-}
-
-.project-form input, 
+/* 表單輸入 */
+.project-form input[type="text"],
 .project-form select {
     width: 100%;
     padding: 10px;
-    margin: 5px 0;
+    margin-bottom: 20px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
     box-sizing: border-box;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.project-form select {
-    appearance: none;
-    background-color: #f9f9f9;
-}
-
-.selected-audiences {
-    margin-top: 10px;
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.selected-audience {
-    background-color: #e0e0e0;
-    border-radius: 4px;
-    padding: 5px 10px;
-    margin: 5px;
-    display: flex;
-    align-items: center;
-}
-
-.selected-audience button {
-    background: none;
-    border: none;
     font-size: 16px;
-    margin-left: 10px;
-    cursor: pointer;
-    color: #ff0000;
 }
 
-.project-form .product-image {
-    margin-top: 10px;
-    max-width: 100%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-}
-
+/* 選擇圖片按鈕 */
 .upload-button {
-    background-color: #007bff;
-    color: white;
+    display: inline-block;
     padding: 10px 20px;
-    border: none;
+    margin-bottom: 20px;
+    border: 1px solid #007bff;
     border-radius: 4px;
+    background-color: #007bff;
+    color: #ffffff;
     cursor: pointer;
-    margin-top: 10px;
+    text-align: center;
+    transition: background-color 0.3s ease;
 }
 
 .upload-button:hover {
     background-color: #0056b3;
 }
 
+/* 提交按鈕 */
 .submit-button {
-    background-color: #4CAF50;
-    color: white;
+    display: inline-block;
     padding: 10px 20px;
-    border: none;
+    border: 1px solid #28a745;
     border-radius: 4px;
+    background-color: #28a745;
+    color: #ffffff;
     cursor: pointer;
-    margin-top: 10px;
+    text-align: center;
+    transition: background-color 0.3s ease;
 }
 
 .submit-button:hover {
-    background-color: #45a049;
+    background-color: #218838;
+}
+
+/* 選擇受眾區域 */
+.selected-audiences {
+    margin-bottom: 20px;
+}
+
+.selected-audience {
+    display: flex; /* 使用 flex 布局 */
+    align-items: center; /* 垂直居中對齊 */
+    padding: 5px 10px;
+    margin: 5px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    background-color: #f1f1f1;
+    font-size: 14px;
+    position: relative;
+}
+
+.audience-text {
+    flex-grow: 1; /* 讓文本佔據剩餘空間 */
+    padding-right: 25px; /* 確保文本與按鈕之間有足夠的間距 */
+}
+
+.selected-audience button {
+    border: none;
+    background: none;
+    color: #ff0000;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    position: absolute; /* 使用絕對定位 */
+    right: 5px; /* 確保按鈕在右側 */
+    top: 50%; /* 垂直居中 */
+    transform: translateY(-50%); /* 垂直居中 */
+}
+
+/* 錯誤信息 */
+.error {
+    color: #ff0000;
+    font-size: 14px;
+}
+
+/* 加載信息 */
+.loading {
+    font-size: 14px;
+    color: #007bff;
+}
+
+/* 預覽圖片 */
+.product-image {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    padding: 5px;
+    background: #ffffff;
 }
