@@ -5,12 +5,13 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
-    max-width: 800px; /* 最大寬度，保證可讀性 */
-    margin: 0 auto; /* 居中顯示 */
+    width: 100%; /* 寬度佔滿 */
+    height: 100%; /* 高度佔滿 */
+    box-sizing: border-box; /* 包含內邊距和邊框 */
 }
 
 .manual h2 {
-    font-size: 24px;
+    font-size: 28px; /* 調整標題大小 */
     color: #ecf0f1; /* 白色文字 */
     margin-bottom: 20px;
     text-align: center; /* 標題居中 */
@@ -25,13 +26,13 @@
 }
 
 .manual-section h3 {
-    font-size: 20px;
+    font-size: 24px; /* 調整副標題大小 */
     color: #ecf0f1; /* 白色文字 */
     margin-bottom: 10px;
 }
 
 .manual-section p {
-    font-size: 16px;
+    font-size: 18px; /* 調整段落文字大小 */
     color: #ecf0f1; /* 白色文字 */
     line-height: 1.6; /* 行高，增加可讀性 */
     margin-bottom: 10px;
@@ -65,14 +66,14 @@
     }
 
     .manual h2 {
-        font-size: 20px;
+        font-size: 24px; /* 調整標題大小 */
     }
 
     .manual-section h3 {
-        font-size: 18px;
+        font-size: 20px; /* 調整副標題大小 */
     }
 
     .manual-section p {
-        font-size: 14px;
+        font-size: 16px; /* 調整段落文字大小 */
     }
 }
