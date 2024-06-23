@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getStaticUrl } from '../api';
 import '../styles/GeneratedImages.css';
 
 const GeneratedImages = ({ images }) => {
@@ -16,7 +17,7 @@ const GeneratedImages = ({ images }) => {
             {generatedImages.length > 0 ? (
                 <div className="image-grid">
                     {generatedImages.map((image, index) => (
-                        <img key={index} src={`http://localhost:8000/static/${image}`} alt={`Generated ${index}`} />
+                        <img key={index} src={getStaticUrl(image)} alt={`Generated ${index}`} />
                     ))}
                 </div>
             ) : (

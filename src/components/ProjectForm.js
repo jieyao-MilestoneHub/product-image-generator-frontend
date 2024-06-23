@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
 import PropTypes from 'prop-types';
+import { fetchTargetOptions, uploadImage, generateImages } from '../api';
 import '../styles/ProjectForm.css';
 
 const ProjectForm = ({ onImagesGenerated }) => {
@@ -9,40 +9,31 @@ const ProjectForm = ({ onImagesGenerated }) => {
     const [productImage, setProductImage] = useState(null);
     const [uploadedImageFilename, setUploadedImageFilename] = useState('');
     const [targetOptions, setTargetOptions] = useState({});
-    const [isLoading, setIsLoading] = useState(false); // 加載狀態
-    const [error, setError] = useState(''); // 錯誤信息
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
     const fileInputRef = useRef(null);
 
     useEffect(() => {
-        const fetchTargetOptions = async () => {
+        const getTargetOptions = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/target-audiences');
-                setTargetOptions(response.data);
+                const data = await fetchTargetOptions();
+                setTargetOptions(data);
             } catch (error) {
-                console.error("There was an error fetching target audiences!", error);
                 setError("無法獲取目標受眾資料。");
             }
         };
-        fetchTargetOptions();
+        getTargetOptions();
     }, []);
 
     const handleImageUpload = async (e) => {
         const imageFile = e.target.files[0];
         setProductImage(imageFile);
 
-        const formData = new FormData();
-        formData.append('product_image', imageFile);
-
         setIsLoading(true);
         try {
-            const response = await axios.post('http://localhost:8000/api/upload-image', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-            setUploadedImageFilename(response.data.filename);
+            const filename = await uploadImage(imageFile);
+            setUploadedImageFilename(filename);
         } catch (error) {
-            console.error("There was an error uploading the image!", error);
             setError("上傳圖片失敗。");
         }
         setIsLoading(false);
@@ -54,27 +45,15 @@ const ProjectForm = ({ onImagesGenerated }) => {
             return;
         }
 
-        const formData = new FormData();
-        formData.append('project_name', projectName);
-        formData.append('target_audience', selectedAudiences.join(','));
-        formData.append('product_image_filename', uploadedImageFilename);
-
         setIsLoading(true);
         try {
-            const response = await axios.post('http://localhost:8000/api/generate-images', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-
+            const generatedImages = await generateImages(projectName, selectedAudiences, uploadedImageFilename);
             if (typeof onImagesGenerated === 'function') {
-                onImagesGenerated(response.data.generated_images);
+                onImagesGenerated(generatedImages);
             } else {
-                console.error('onImagesGenerated is not a function');
                 setError("內部錯誤：圖片生成回調不是函數。");
             }
         } catch (error) {
-            console.error("There was an error generating the images!", error);
             setError("生成圖片過程中發生錯誤。");
         }
         setIsLoading(false);

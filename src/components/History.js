@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { fetchHistory, getStaticUrl } from '../api';
 import Footer from './Footer';
 import '../styles/History.css';
 
@@ -7,16 +7,16 @@ const History = () => {
     const [historyData, setHistoryData] = useState([]);
 
     useEffect(() => {
-        const fetchHistory = async () => {
+        const getHistory = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/history');
-                setHistoryData(response.data);
+                const data = await fetchHistory();
+                setHistoryData(data);
             } catch (error) {
                 console.error('Error fetching history data:', error);
             }
         };
 
-        fetchHistory();
+        getHistory();
     }, []);
 
     return (
@@ -29,7 +29,7 @@ const History = () => {
                         <p><strong>定向描述:</strong> {record.target_audience}</p>
                         <div className="history-images">
                             <img
-                                src={`http://localhost:8000/static/${record.product_image_filename}`}
+                                src={getStaticUrl(record.product_image_filename)}
                                 alt={`Product ${index}`}
                                 className="product-image"
                             />
@@ -37,7 +37,7 @@ const History = () => {
                                 {record.generated_images.map((image, imgIndex) => (
                                     <img
                                         key={imgIndex}
-                                        src={`http://localhost:8000/static/${image}`}
+                                        src={getStaticUrl(image)}
                                         alt={`Generated ${imgIndex}`}
                                     />
                                 ))}
