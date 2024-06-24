@@ -28,9 +28,10 @@ export const uploadImage = async (imageFile) => {
     }
 };
 
-export const generateImages = async (projectName, selectedAudiences, uploadedImageFilename, timestamp) => {
+export const generateImages = async (projectName, projectDescribe, selectedAudiences, uploadedImageFilename, timestamp) => {
     const formData = new FormData();
     formData.append('project_name', projectName);
+    formData.append('project_describe', projectDescribe);
     formData.append('target_audience', selectedAudiences.join(','));
     formData.append('product_image_filename', uploadedImageFilename);
     formData.append('timestamp', timestamp);
@@ -57,3 +58,19 @@ export const fetchHistory = async () => {
 };
 
 export const getStaticUrl = (path) => `${staticDomain}/${path}`;
+
+export const uploadCSV = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+        const response = await axios.post(`${apiDomain}/api/upload-audience`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error('Error uploading CSV file');
+    }
+};

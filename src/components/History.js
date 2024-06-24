@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import moment from 'moment';
 import { fetchHistory, getStaticUrl } from '../api';
 import Footer from './Footer';
 import '../styles/History.css';
@@ -25,7 +26,7 @@ const History = () => {
             {historyData.length > 0 ? (
                 historyData.map((record, index) => (
                     <div key={index} className="history-record">
-                        <h3>{record.project_name}</h3>
+                        <h3>{record.project_name}: {record.project_describe}</h3>
                         <p><strong>定向描述:</strong> {record.target_audience}</p>
                         <div className="history-images">
                             <img
@@ -43,7 +44,7 @@ const History = () => {
                                 ))}
                             </div>
                         </div>
-                        <p><strong>時間:</strong> {record.write_date}</p>
+                        <p><strong>時間:</strong> {moment(record.write_date, 'YYYYMMDDHHmmss').format('YYYY-MM-DD HH:mm:ss')}</p>
                     </div>
                 ))
             ) : (

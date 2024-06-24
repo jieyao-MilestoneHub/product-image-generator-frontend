@@ -1,0 +1,54 @@
+.steps-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 10%;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.step:hover {
+    transform: scale(1.05);
+}
+
+.step-number {
+    background-color: #3498db;
+    color: white;
+    border-radius: 50%;
+    padding: 15px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.step-description {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 16px;
+    color: #2c3e50;
+}
+
+.arrow {
+    font-size: 24px;
+    color: #2c3e50;
+}
+
+.step.active .step-number {
+    background-color: #1abc9c;
+}
+
+.step.active .step-description {
+    font-weight: bold;
+    color: #1abc9c;
+}

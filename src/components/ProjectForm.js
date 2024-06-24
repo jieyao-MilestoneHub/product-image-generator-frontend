@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import { fetchTargetOptions, uploadImage, generateImages } from '../api';
 import '../styles/ProjectForm.css';
 
-const ProjectForm = ({ onImagesGenerated }) => {
-    const [projectName, setProjectName] = useState('');
-    const [selectedAudiences, setSelectedAudiences] = useState([]);
-    const [productImage, setProductImage] = useState(null);
-    const [uploadedImageFilename, setUploadedImageFilename] = useState('');
-    const [timestamp, setTimestamp] = useState('');
+const ProjectForm = ({ onImagesGenerated, formData, onFormDataChange }) => {
+    const [projectName, setProjectName] = useState(formData.projectName || '');
+    const [projectDescribe, setProjectDescribe] = useState(formData.projectDescribe || '');
+    const [selectedAudiences, setSelectedAudiences] = useState(formData.selectedAudiences || []);
+    const [productImage, setProductImage] = useState(formData.productImage || null);
+    const [uploadedImageFilename, setUploadedImageFilename] = useState(formData.uploadedImageFilename || '');
+    const [timestamp, setTimestamp] = useState(formData.timestamp || '');
     const [targetOptions, setTargetOptions] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
@@ -25,6 +26,17 @@ const ProjectForm = ({ onImagesGenerated }) => {
         };
         getTargetOptions();
     }, []);
+
+    useEffect(() => {
+        onFormDataChange({
+            projectName,
+            projectDescribe,
+            selectedAudiences,
+            productImage,
+            uploadedImageFilename,
+            timestamp
+        });
+    }, [projectName, projectDescribe, selectedAudiences, productImage, uploadedImageFilename, timestamp, onFormDataChange]);
 
     const handleImageUpload = async (e) => {
         const imageFile = e.target.files[0];
@@ -43,15 +55,15 @@ const ProjectForm = ({ onImagesGenerated }) => {
     };
 
     const handleSubmit = async () => {
-        console.log('Submitting form with:', { projectName, selectedAudiences, uploadedImageFilename, timestamp });
-        if (!projectName || selectedAudiences.length === 0 || !uploadedImageFilename || !timestamp) {
+        console.log('Submitting form with:', { projectName, projectDescribe, selectedAudiences, uploadedImageFilename, timestamp });
+        if (!projectName || !projectDescribe || selectedAudiences.length === 0 || !uploadedImageFilename || !timestamp) {
             alert("所有資訊都是必填/選的！");
             return;
         }
 
         setIsLoading(true);
         try {
-            const generatedImages = await generateImages(projectName, selectedAudiences, uploadedImageFilename, timestamp);
+            const generatedImages = await generateImages(projectName, projectDescribe, selectedAudiences, uploadedImageFilename, timestamp);
             if (typeof onImagesGenerated === 'function') {
                 onImagesGenerated(generatedImages);
             } else {
@@ -80,21 +92,31 @@ const ProjectForm = ({ onImagesGenerated }) => {
 
     return (
         <div className="project-form">
-            <h2>專案名稱 <span className="required">*</span></h2>
+            <h2>產品名稱 <span className="required">*</span></h2>
             <input 
                 type="text" 
                 value={projectName} 
                 onChange={(e) => setProjectName(e.target.value)} 
-                placeholder="輸入專案名稱" 
+                placeholder="輸入產品名稱" 
+                required
+            />
+            <h2>產品描述 <span className="required">*</span></h2>
+            <input 
+                type="text" 
+                value={projectDescribe} 
+                onChange={(e) => setProjectDescribe(e.target.value)} 
+                placeholder="輸入產品描述"
                 required
             />
             <h2>投放定向 <span className="required">*</span></h2>
-            <select onChange={handleTargetAudienceChange} required>
-                <option value="">選擇投放定向</option>
-                {Object.entries(targetOptions).map(([key, value]) => (
-                    <option key={key} value={value}>{value}</option>
-                ))}
-            </select>
+            <div className="select-wrapper">
+                <select onChange={handleTargetAudienceChange} required>
+                    <option value="">選擇投放定向</option>
+                    {Object.entries(targetOptions).map(([key, value]) => (
+                        <option key={key} value={value}>{value}</option>
+                    ))}
+                </select>
+            </div>
             <div className="selected-audiences-container">
                 <div className="selected-audiences">
                     {selectedAudiences.map((audience, index) => (
@@ -125,6 +147,8 @@ const ProjectForm = ({ onImagesGenerated }) => {
 
 ProjectForm.propTypes = {
     onImagesGenerated: PropTypes.func.isRequired,
+    formData: PropTypes.object.isRequired,
+    onFormDataChange: PropTypes.func.isRequired,
 };
 
 export default ProjectForm;
