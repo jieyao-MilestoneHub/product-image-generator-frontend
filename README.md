@@ -4,7 +4,7 @@
 
 ## 啟動網頁
 
-1. 確保完成 `product-image-generator-backend` 中的步驟
+1. 確保完成 [`product-image-generator-backend`]([URL](https://github.com/jieyao-MilestoneHub/product-image-generator-backend) 中的步驟 
 2. 在終端中執行 `npm start` 命令啟動前端應用
 
 ## 配置文件
