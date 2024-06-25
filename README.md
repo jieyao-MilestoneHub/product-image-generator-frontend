@@ -1,11 +1,11 @@
 # 使用指南
 
-這個專案旨在透過 AIGC 解決廣告素材製作成本的問題，需要搭配 `product-image-generator-backend` 一起使用。
+這個專案旨在透過 AIGC 進行精準投放，需要搭配 [`product-image-generator-backend`](https://github.com/jieyao-MilestoneHub/product-image-generator-backend) 一起使用。
 
 ## 啟動網頁
 
-1. 確保完成 `product-image-generator-backend` 中的步驟
-2. 在終端中執行 `npm start` 命令啟動前端應用
+1. 確保完成 `product-image-generator-backend` 中的每個步驟。
+2. 在終端中執行 `npm start` 命令啟動前端應用。
 
 ## 配置文件
 
