@@ -5,7 +5,7 @@ import '../styles/Sidebar.css';
 
 const Sidebar = () => {
     const location = useLocation();
-    
+
     return (
         <div className="sidebar">
             <h2>選單</h2>

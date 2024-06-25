@@ -1,18 +1,21 @@
 .main-content {
-    flex: 1; /* 確保主內容區域佔據剩餘空間 */
+    flex: 1;
     display: flex;
     flex-direction: column;
     padding: 20px;
-    overflow: auto; /* 允許內容滾動 */
-    background-color: #2c3e50; /* 深色背景 */
+    overflow: auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .section {
-    flex: 1; /* 確保節佔據剩餘空間 */
+    flex: 1;
     display: flex;
     flex-direction: column;
-    overflow: auto; /* 允許內容滾動 */
-    border-radius: 8px; /* 增加圓角 */
-    background-color: #ffffff; /* 背景色為白色 */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 增加陰影效果 */
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
 }

@@ -9,12 +9,14 @@ const App = () => {
         <Router>
             <div className="app">
                 <Sidebar />
-                <Routes>
-                    <Route path="/item1" element={<MainContent project="新增素材" />} />
-                    <Route path="/item2" element={<MainContent project="歷史紀錄" />} />
-                    <Route path="/item3" element={<MainContent project="使用手冊" />} />
-                    <Route path="/" element={<MainContent project="新增素材" />} />
-                </Routes>
+                <div className="main-content-wrapper">
+                    <Routes>
+                        <Route path="/item1" element={<MainContent project="新增素材" />} />
+                        <Route path="/item2" element={<MainContent project="歷史紀錄" />} />
+                        <Route path="/item3" element={<MainContent project="使用手冊" />} />
+                        <Route path="/" element={<MainContent project="新增素材" />} />
+                    </Routes>
+                </div>
             </div>
         </Router>
     );

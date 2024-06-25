@@ -1,117 +1,130 @@
-/* 表單容器 */
 .project-form {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
     padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* 表單標題 */
 .project-form h2 {
     font-size: 18px;
-    color: #333333;
+    color: #333;
     margin-bottom: 10px;
 }
 
-/* 表單輸入 */
-.project-form input[type="text"],
-.project-form select {
+.project-form input[type="text"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 20px;
-    border: 1px solid #cccccc;
+    border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
-    font-size: 16px;
 }
 
-/* 選擇圖片按鈕 */
+.select-wrapper {
+    margin-bottom: 20px;
+}
+
+.select-wrapper select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    appearance: none;
+    background: #fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23333" d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center;
+    background-size: 12px;
+}
+
+.selected-audiences-container {
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+}
+
+.selected-audiences {
+    margin-bottom: 20px;
+}
+
+.selected-audience {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 14px;
+}
+
+.audience-text {
+    flex-grow: 1;
+    padding-right: 10px;
+}
+
+.selected-audience button {
+    border: none;
+    background: none;
+    color: #e74c3c;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+}
+
 .upload-button {
     display: inline-block;
     padding: 10px 20px;
     margin-bottom: 20px;
-    border: 1px solid #007bff;
+    border: 1px solid #3498db;
     border-radius: 4px;
-    background-color: #007bff;
-    color: #ffffff;
+    background-color: #3498db;
+    color: #fff;
     cursor: pointer;
     text-align: center;
     transition: background-color 0.3s ease;
 }
 
 .upload-button:hover {
-    background-color: #0056b3;
+    background-color: #2980b9;
 }
 
-/* 提交按鈕 */
-.submit-button {
-    display: inline-block;
-    padding: 10px 20px;
-    border: 1px solid #28a745;
-    border-radius: 4px;
-    background-color: #28a745;
-    color: #ffffff;
-    cursor: pointer;
-    text-align: center;
-    transition: background-color 0.3s ease;
-}
-
-.submit-button:hover {
-    background-color: #218838;
-}
-
-/* 選擇受眾區域 */
-.selected-audiences {
-    margin-bottom: 20px;
-}
-
-.selected-audience {
-    display: flex; /* 使用 flex 布局 */
-    align-items: center; /* 垂直居中對齊 */
-    padding: 5px 10px;
-    margin: 5px;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
-    background-color: #f1f1f1;
-    font-size: 14px;
-    position: relative;
-}
-
-.audience-text {
-    flex-grow: 1; /* 讓文本佔據剩餘空間 */
-    padding-right: 25px; /* 確保文本與按鈕之間有足夠的間距 */
-}
-
-.selected-audience button {
-    border: none;
-    background: none;
-    color: #ff0000;
-    font-size: 16px;
-    line-height: 1;
-    cursor: pointer;
-    position: absolute; /* 使用絕對定位 */
-    right: 5px; /* 確保按鈕在右側 */
-    top: 50%; /* 垂直居中 */
-    transform: translateY(-50%); /* 垂直居中 */
-}
-
-/* 錯誤信息 */
-.error {
-    color: #ff0000;
-    font-size: 14px;
-}
-
-/* 加載信息 */
-.loading {
-    font-size: 14px;
-    color: #007bff;
-}
-
-/* 預覽圖片 */
 .product-image {
-    display: block;
     max-width: 100%;
     height: auto;
     margin-bottom: 20px;
-    border: 1px solid #cccccc;
+    border: 1px solid #ccc;
     border-radius: 4px;
-    padding: 5px;
-    background: #ffffff;
+}
+
+.submit-button {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #2ecc71;
+    color: #fff;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #27ae60;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.loading {
+    font-size: 14px;
+    color: #333;
+}
+
+.error {
+    font-size: 14px;
+    color: #e74c3c;
 }

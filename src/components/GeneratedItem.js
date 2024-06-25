@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getStaticUrl } from '../api';
-import '../styles/GeneratedImages.css';
+import '../styles/GeneratedItem.css';
 
 const GeneratedImages = ({ images }) => {
     const [generatedImages, setGeneratedImages] = useState([]);

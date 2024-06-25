@@ -1,35 +1,27 @@
 .app {
   display: flex;
-  height: 100vh; /* 讓應用佔據整個視窗高度 */
-  overflow: hidden; /* 防止滾動條影響布局 */
-  background-color: #2c3e50; /* 深色背景 */
+  min-height: 100vh;
+  background-color: #f0f2f5; /* 淡灰色背景 */
 }
 
-.sidebar {
-  flex: 0 0 250px; /* 固定側邊欄寬度 */
-  background-color: #34495e; /* 深木質背景色 */
-  color: #ecf0f1; /* 側邊欄文字顏色 */
+.main-content-wrapper {
+  flex: 1;
+  margin-left: 250px; /* 预留侧边栏宽度 */
   padding: 20px;
-  box-sizing: border-box;
-  overflow-y: auto; /* 側邊欄內容滾動 */
-}
-
-.sidebar a {
-  color: #ecf0f1; /* 側邊欄鏈接顏色 */
-  text-decoration: none;
-  display: block;
-  padding: 10px 0;
-  border-bottom: 1px solid #4b4b4b; /* 分隔線 */
-}
-
-.sidebar a:hover {
-  background-color: #4b4b4b; /* 懸停效果 */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* 顶部对齐内容 */
 }
 
 .main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background-color: #2c3e50; /* 深色背景 */
-  overflow-y: auto; /* 主內容區域滾動 */
+  width: 100%;
+  max-width: 1200px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.section {
+  margin: 20px 0;
 }

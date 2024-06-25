@@ -22,7 +22,7 @@ export const uploadImage = async (imageFile) => {
                 'Content-Type': 'multipart/form-data'
             }
         });
-        return response.data; // 確保返回的數據包含 filename 和 timestamp
+        return response.data; // 确保返回的数据包含 filename 和 timestamp
     } catch (error) {
         throw new Error('Error uploading image');
     }
