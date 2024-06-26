@@ -22,9 +22,27 @@ export const uploadImage = async (imageFile) => {
                 'Content-Type': 'multipart/form-data'
             }
         });
-        return response.data; // 确保返回的数据包含 filename 和 timestamp
+        return response.data; // 確保返回的數據包含 filename 和 timestamp
     } catch (error) {
         throw new Error('Error uploading image');
+    }
+};
+
+export const generateText = async (projectName, projectDescribe, selectedAudiences) => {
+    const formData = new FormData();
+    formData.append('product_name', projectName);
+    formData.append('product_describe', projectDescribe);
+    formData.append('audience_types', selectedAudiences.join(','));
+
+    try {
+        const response = await axios.post(`${apiDomain}/api/generate-text`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        return response.data.texts;
+    } catch (error) {
+        throw new Error('Error generating texts');
     }
 };
 
@@ -45,6 +63,27 @@ export const generateImages = async (projectName, projectDescribe, selectedAudie
         return response.data.generated_images;
     } catch (error) {
         throw new Error('Error generating images');
+    }
+};
+
+export const generateProject = async (projectName, projectDescribe, selectedAudiences, uploadedImageFilename, timestamp) => {
+    try {
+        const [texts, images] = await Promise.all([
+            generateText(projectName, projectDescribe, selectedAudiences),
+            generateImages(projectName, projectDescribe, selectedAudiences, uploadedImageFilename, timestamp)
+        ]);
+
+        // 圖像 URL 與生成的文本放在一起
+        const combinedResults = texts.map((text, index) => ({
+            imageUrl: images[index],
+            shortText: text.shortText,
+            longText: text.longText,
+            audienceType: text.audienceType
+        }));
+
+        return combinedResults;
+    } catch (error) {
+        throw new Error('Error generating project');
     }
 };
 

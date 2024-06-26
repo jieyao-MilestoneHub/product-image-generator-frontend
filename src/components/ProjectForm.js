@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { fetchTargetOptions, uploadImage, generateImages } from '../api';
+import { fetchTargetOptions, uploadImage, generateProject } from '../api';
 import '../styles/ProjectForm.css';
 
 const ProjectForm = ({ onImagesGenerated, formData, onFormDataChange }) => {
@@ -63,14 +63,14 @@ const ProjectForm = ({ onImagesGenerated, formData, onFormDataChange }) => {
 
         setIsLoading(true);
         try {
-            const generatedImages = await generateImages(projectName, projectDescribe, selectedAudiences, uploadedImageFilename, timestamp);
+            const generatedResults = await generateProject(projectName, projectDescribe, selectedAudiences, uploadedImageFilename, timestamp);
             if (typeof onImagesGenerated === 'function') {
-                onImagesGenerated(generatedImages);
+                onImagesGenerated(generatedResults);
             } else {
                 setError("內部錯誤：圖片生成回調不是函數。");
             }
         } catch (error) {
-            setError("生成圖片過程中發生錯誤。");
+            setError("生成項目過程中發生錯誤。");
         }
         setIsLoading(false);
     };
@@ -138,7 +138,7 @@ const ProjectForm = ({ onImagesGenerated, formData, onFormDataChange }) => {
                 required
             />
             {productImage && <img src={URL.createObjectURL(productImage)} alt="Product" className="product-image" />}
-            <button onClick={handleSubmit} className="submit-button">生成圖片</button>
+            <button onClick={handleSubmit} className="submit-button">生成項目</button>
             {isLoading && <p className="loading">Loading...</p>}
             {error && <p className="error">{error}</p>}
         </div>

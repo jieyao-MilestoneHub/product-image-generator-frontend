@@ -16,12 +16,21 @@ const GeneratedImages = ({ images }) => {
             <h2>生成素材圖片</h2>
             {generatedImages.length > 0 ? (
                 <div className="image-grid">
-                    {generatedImages.map((image, index) => (
-                        <img key={index} src={getStaticUrl(image)} alt={`Generated ${index}`} />
+                    {generatedImages.map((item, index) => (
+                        <div key={index} className="image-item">
+                            <img src={getStaticUrl(item.imageUrl)} alt={`Generated ${index}`} />
+                            <div className="text-content">
+                                <p><strong>受眾:</strong> {item.audienceType}</p>
+                                <p><strong>短文本:</strong></p>
+                                <p>{item.shortText}</p>
+                                <p><strong>長文本:</strong></p>
+                                <p>{item.longText}</p>
+                            </div>
+                        </div>
                     ))}
                 </div>
             ) : (
-                <p>No images generated yet.</p>
+                <p>尚未生成圖片。</p>
             )}
         </div>
     );

@@ -1,86 +1,96 @@
-.generated-items {
+body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #f4f4f9;
     color: #333;
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.generated-items h2 {
-    text-align: center;
-    color: #007bff;
+/* 生成圖片的容器，帶有適當的填充和居中對齊 */
+.generated-images {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 標題樣式，字體更大、更粗，顏色更突出 */
+.generated-images h2 {
+    font-size: 2em;
+    font-weight: bold;
+    color: #4a4a4a;
     margin-bottom: 20px;
-    font-size: 1.5em;
-    border-bottom: 2px solid #007bff;
-    display: inline-block;
-    padding-bottom: 5px;
 }
 
-.generate-button {
-    display: block;
-    width: 200px;
-    margin: 0 auto 20px auto;
-    padding: 10px 20px;
-    font-size: 1em;
-    color: #fff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+/* 圖片網格容器，使用Flexbox佈局 */
+.image-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
 }
 
-.generate-button:disabled {
-    background-color: #6c757d;
-    cursor: not-allowed;
-}
-
-.generate-button:hover:enabled {
-    background-color: #0056b3;
-}
-
-.item-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-}
-
-.item {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* 單個圖片項的樣式，帶有陰影、圓角和過渡效果 */
+.image-item {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     overflow: hidden;
-    transition: transform 0.3s;
+    max-width: 300px; /* 固定寬度，使佈局更整齊 */
+    flex: 1 1 300px; /* 使項目可調整大小 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
-.item:hover {
-    transform: scale(1.02);
+/* 圖片項的懸停效果，增加陰影和縮放 */
+.image-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-.generated-image {
+/* 圖片樣式，適當的圓角和寬度 */
+.image-item img {
     width: 100%;
     height: auto;
-    display: block;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
 }
 
-.text-container {
-    padding: 15px;
-    background-color: #f1f1f1;
+/* 文字內容的容器，適當的內邊距和背景顏色 */
+.text-content {
+    padding: 20px;
+    background: linear-gradient(135deg, #f9f9f9, #ffffff);
+    border-radius: 0 0 12px 12px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.ad-text {
+/* 各段文本的樣式，設置間距和顏色 */
+.text-content p {
     margin: 10px 0;
-    font-size: 1em;
-    color: #333;
+    line-height: 1.6;
+    color: #555;
+    white-space: pre-line; /* 確保文本換行 */
 }
 
-.ad-text strong {
-    color: #007bff;
-}
-
-.no-items {
-    text-align: center;
-    color: #6c757d;
+/* 強調文本的樣式，字體更大、更粗 */
+.text-content p strong {
     font-size: 1.2em;
+    color: #222;
+}
+
+/* 適配不同螢幕大小 */
+@media (max-width: 768px) {
+    .image-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+    .image-item {
+        width: 90%;
+        margin-bottom: 20px;
+    }
 }
