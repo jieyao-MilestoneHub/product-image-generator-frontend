@@ -26,23 +26,30 @@ const History = () => {
             {historyData.length > 0 ? (
                 historyData.map((record, index) => (
                     <div key={index} className="history-record">
-                        <h3>{record.project_name}: {record.project_describe}</h3>
+                        <h3>{record.product_name}: {record.product_describe}</h3>
                         <p><strong>定向描述:</strong> {record.target_audience}</p>
                         <div className="history-images">
-                            <img
-                                src={getStaticUrl(record.product_image_filename)}
-                                alt={`Product ${index}`}
-                                className="product-image"
-                            />
+                            <div className="original-image">
+                                <img
+                                    src={getStaticUrl(record.product_image_filename)}
+                                    alt={`Product ${index}`}
+                                    className="product-image"
+                                />
+                            </div>
                             <div className="generated-images">
                                 {record.generated_images.map((image, imgIndex) => (
                                     <img
                                         key={imgIndex}
                                         src={getStaticUrl(image)}
                                         alt={`Generated ${imgIndex}`}
+                                        className="generated-image"
                                     />
                                 ))}
                             </div>
+                        </div>
+                        <div className="ad-texts">
+                            <p><strong>短文案:</strong> {record.short_ad}</p>
+                            <p><strong>長文案:</strong> {record.long_ad}</p>
                         </div>
                         <p><strong>時間:</strong> {moment(record.write_date, 'YYYYMMDDHHmmss').format('YYYY-MM-DD HH:mm:ss')}</p>
                     </div>
