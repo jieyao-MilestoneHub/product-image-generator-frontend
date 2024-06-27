@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import UploadCSV from './UploadCSV';
 import AnalyzeCSV from './AnalyzeCSV';
 import ProjectForm from './ProjectForm';
-import GeneratedImages from './GeneratedItem';
+import GeneratedItem from './GeneratedItem';
 import Footer from './Footer';
 import Steps from './Steps';
 import '../styles/NewProject.css';
@@ -12,6 +12,9 @@ const NewProject = ({ project }) => {
     const [currentStep, setCurrentStep] = useState(0);
     const [chartData, setChartData] = useState(null);
     const [formData, setFormData] = useState({}); // 儲存表單數據 (防止切換步驟失去已填寫數據)
+    const [audience, setAudience] = useState("");
+    const [shortText, setShortText] = useState("");
+    const [longText, setLongText] = useState("");
 
     useEffect(() => {
         const handleBeforeUnload = (event) => {
@@ -26,9 +29,20 @@ const NewProject = ({ project }) => {
         };
     }, []);
 
-    const handleImagesGenerated = (newImages) => {
-        setImages(newImages);
-        setCurrentStep(2); // 生成圖片後進入第三步驟
+    const handleProjectsGenerated = (projectInfo) => {
+        console.log("Generated project info:", projectInfo);
+        if (projectInfo && projectInfo.generated_images) {
+            const imagesWithInfo = projectInfo.generated_images.map((image, index) => ({
+                imageUrl: image,
+            }));
+            setImages(imagesWithInfo);
+            setAudience(projectInfo.target_audience);
+            setShortText(projectInfo.short_ad);
+            setLongText(projectInfo.long_ad);
+            setCurrentStep(2); // 生成圖片後進入第三步驟
+        } else {
+            console.error("Invalid project info format");
+        }
     };
 
     const handleStepChange = (step) => {
@@ -58,7 +72,7 @@ const NewProject = ({ project }) => {
                 {currentStep === 1 && (
                     <div className="project-form-container">
                         <ProjectForm 
-                            onImagesGenerated={handleImagesGenerated} 
+                            onImagesGenerated={handleProjectsGenerated} 
                             formData={formData} 
                             onFormDataChange={handleFormDataChange} 
                         />
@@ -66,7 +80,12 @@ const NewProject = ({ project }) => {
                 )}
                 {currentStep === 2 && (
                     <div className="generated-images-container">
-                        <GeneratedImages images={images} />
+                        <GeneratedItem 
+                            images={images} 
+                            audience={audience} 
+                            shortText={shortText} 
+                            longText={longText} 
+                        />
                     </div>
                 )}
                 <div className="button-container">

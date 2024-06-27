@@ -3,12 +3,17 @@ import getConfig from './config';
 
 const { apiDomain, staticDomain } = getConfig();
 
+const handleApiError = (error) => {
+    const errorMsg = error.response?.data?.detail || 'Unknown error';
+    throw new Error(errorMsg);
+};
+
 export const fetchTargetOptions = async () => {
     try {
         const response = await axios.get(`${apiDomain}/api/target-audiences`);
         return response.data;
     } catch (error) {
-        throw new Error('Error fetching target audiences');
+        handleApiError(error);
     }
 };
 
@@ -24,66 +29,27 @@ export const uploadImage = async (imageFile) => {
         });
         return response.data; // 確保返回的數據包含 filename 和 timestamp
     } catch (error) {
-        throw new Error('Error uploading image');
+        handleApiError(error);
     }
 };
 
-export const generateText = async (projectName, projectDescribe, selectedAudiences) => {
+export const generateProduct = async (productName, productDescribe, selectedAudiences, uploadedImageFilename, timestamp) => {
     const formData = new FormData();
-    formData.append('product_name', projectName);
-    formData.append('product_describe', projectDescribe);
-    formData.append('audience_types', selectedAudiences.join(','));
-
-    try {
-        const response = await axios.post(`${apiDomain}/api/generate-text`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        });
-        return response.data.texts;
-    } catch (error) {
-        throw new Error('Error generating texts');
-    }
-};
-
-export const generateImages = async (projectName, projectDescribe, selectedAudiences, uploadedImageFilename, timestamp) => {
-    const formData = new FormData();
-    formData.append('project_name', projectName);
-    formData.append('project_describe', projectDescribe);
-    formData.append('target_audience', selectedAudiences.join(','));
+    formData.append('product_name', productName);
+    formData.append('product_describe', productDescribe);
+    formData.append('target_audience', `${selectedAudiences.gender},${selectedAudiences.age},${selectedAudiences.occupation},${selectedAudiences.interest}`);
     formData.append('product_image_filename', uploadedImageFilename);
     formData.append('timestamp', timestamp);
 
     try {
-        const response = await axios.post(`${apiDomain}/api/generate-images`, formData, {
+        const response = await axios.post(`${apiDomain}/api/generate-product`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         });
-        return response.data.generated_images;
+        return response.data;
     } catch (error) {
-        throw new Error('Error generating images');
-    }
-};
-
-export const generateProject = async (projectName, projectDescribe, selectedAudiences, uploadedImageFilename, timestamp) => {
-    try {
-        const [texts, images] = await Promise.all([
-            generateText(projectName, projectDescribe, selectedAudiences),
-            generateImages(projectName, projectDescribe, selectedAudiences, uploadedImageFilename, timestamp)
-        ]);
-
-        // 圖像 URL 與生成的文本放在一起
-        const combinedResults = texts.map((text, index) => ({
-            imageUrl: images[index],
-            shortText: text.shortText,
-            longText: text.longText,
-            audienceType: text.audienceType
-        }));
-
-        return combinedResults;
-    } catch (error) {
-        throw new Error('Error generating project');
+        handleApiError(error);
     }
 };
 
@@ -92,7 +58,7 @@ export const fetchHistory = async () => {
         const response = await axios.get(`${apiDomain}/api/history`);
         return response.data;
     } catch (error) {
-        throw new Error('Error fetching history data');
+        handleApiError(error);
     }
 };
 
@@ -110,6 +76,6 @@ export const uploadCSV = async (file) => {
         });
         return response.data;
     } catch (error) {
-        throw new Error('Error uploading CSV file');
+        handleApiError(error);
     }
 };
