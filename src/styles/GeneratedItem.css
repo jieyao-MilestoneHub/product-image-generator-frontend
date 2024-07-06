@@ -23,12 +23,12 @@ body {
     margin-bottom: 20px;
 }
 
-/* 圖片網格容器，使用Flexbox佈局 */
+/* 圖片網格容器，使用Flexbox佈局，並允許水平滾動 */
 .image-grid {
     display: flex;
-    flex-wrap: wrap;
     gap: 30px;
-    justify-content: center;
+    overflow-x: auto; /* 添加水平滾動條 */
+    padding-bottom: 20px; /* 給滾動條一些空間 */
 }
 
 /* 單個圖片項的樣式，帶有陰影、圓角和過渡效果 */
@@ -38,12 +38,13 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     overflow: hidden;
-    max-width: 400px; /* 固定寬度，使佈局更整齊 */
-    flex: 1 1 400px; /* 使項目可調整大小 */
+    flex: 0 0 auto; /* 防止項目調整大小 */
+    max-width: 300px; /* 固定寬度，使佈局更整齊 */
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    cursor: pointer; /* 添加鼠標懸停效果 */
 }
 
 /* 圖片項的懸停效果，增加陰影和縮放 */
@@ -58,6 +59,18 @@ body {
     height: auto;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
+}
+
+/* 圖片標籤的樣式 */
+.image-label {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 12px;
 }
 
 /* 文字內容的容器，適當的內邊距和背景顏色 */
@@ -86,14 +99,33 @@ body {
     color: #222;
 }
 
-/* 適配不同螢幕大小 */
-@media (max-width: 768px) {
-    .image-grid {
-        flex-direction: column;
-        align-items: center;
-    }
-    .image-item {
-        width: 90%;
-        margin-bottom: 20px;
-    }
+/* 加載狀態樣式 */
+.loading {
+    font-size: 1.2em;
+    color: #4a90e2;
+}
+
+/* 錯誤消息樣式 */
+.error {
+    font-size: 1.2em;
+    color: #e94e77;
+}
+
+/* 模態框圖片樣式 */
+.modal-image {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* 關閉按鈕樣式 */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #e94e77;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
 }

@@ -3,22 +3,31 @@ import PropTypes from 'prop-types';
 import { fetchTargetOptions, uploadImage, generateProduct } from '../api';
 import '../styles/ProductForm.css';
 
-const ProductForm = ({ onImagesGenerated, formData, onFormDataChange }) => {
+const ProductForm = ({ 
+    onImagesGenerated, 
+    formData, 
+    onFormDataChange, 
+    isLoading, 
+    onLoadingChange, 
+    onErrorChange, 
+    onImageUpload, 
+    uploadedImageFilename, 
+    timestamp, 
+    error,
+    onProductImageChange
+}) => {
     const [productName, setProductName] = useState(formData.productName || '');
     const [productDescribe, setProductDescribe] = useState(formData.productDescribe || '');
     const [selectedAudiences, setSelectedAudiences] = useState(formData.selectedAudiences || {
         gender: '',
         age: '',
-        occupation: '',
         interest: ''
     });
     const [productImage, setProductImage] = useState(formData.productImage || null);
-    const [uploadedImageFilename, setUploadedImageFilename] = useState(formData.uploadedImageFilename || '');
-    const [timestamp, setTimestamp] = useState(formData.timestamp || '');
     const [targetOptions, setTargetOptions] = useState({});
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState('');
     const [submitCount, setSubmitCount] = useState(0);
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+    const [imageSelected, setImageSelected] = useState(false); // 標記圖片是否已按下上傳
     const fileInputRef = useRef(null);
 
     useEffect(() => {
@@ -27,11 +36,11 @@ const ProductForm = ({ onImagesGenerated, formData, onFormDataChange }) => {
                 const data = await fetchTargetOptions();
                 setTargetOptions(data);
             } catch (error) {
-                setError("無法獲取目標受眾資料。");
+                onErrorChange("無法獲取目標受眾資料。");
             }
         };
         getTargetOptions();
-    }, []);
+    }, [onErrorChange]);
 
     useEffect(() => {
         onFormDataChange({
@@ -47,17 +56,18 @@ const ProductForm = ({ onImagesGenerated, formData, onFormDataChange }) => {
     const handleImageUpload = async (e) => {
         const imageFile = e.target.files[0];
         setProductImage(imageFile);
+        setImageSelected(true); // 標記圖片已選擇
+        onProductImageChange(URL.createObjectURL(imageFile)); // 傳薪回調，傳遞 image 路徑
 
-        setIsLoading(true);
+        onLoadingChange(true);
         try {
             const response = await uploadImage(imageFile);
             console.log('Image upload response:', response);
-            setUploadedImageFilename(response.filename);
-            setTimestamp(response.timestamp);
+            onImageUpload(response.filename, response.timestamp);
         } catch (error) {
-            setError("上傳圖片失敗。");
+            onErrorChange("上傳圖片失敗。");
         }
-        setIsLoading(false);
+        onLoadingChange(false);
     };
 
     const handleSubmit = async () => {
@@ -68,23 +78,25 @@ const ProductForm = ({ onImagesGenerated, formData, onFormDataChange }) => {
 
         console.log('Submitting form with:', { productName, productDescribe, selectedAudiences, uploadedImageFilename, timestamp });
         if (!productName || !productDescribe || Object.values(selectedAudiences).includes('') || !uploadedImageFilename || !timestamp) {
-            alert("所有資訊都是必填/選的！");
+            alert("檢查是否所有資訊都填完，或請稍等圖片前處理...");
             return;
         }
 
-        setIsLoading(true);
+        onLoadingChange(true);
+        setIsButtonDisabled(true); // 禁用按鈕
         try {
             const generatedResults = await generateProduct(productName, productDescribe, selectedAudiences, uploadedImageFilename, timestamp);
             if (typeof onImagesGenerated === 'function') {
-                onImagesGenerated(generatedResults);
+                onImagesGenerated(generatedResults, productName, productDescribe, selectedAudiences, uploadedImageFilename, timestamp);
             } else {
-                setError("內部錯誤：圖片生成回調不是函數。");
+                onErrorChange("內部錯誤：圖片生成回調不是函數。");
             }
-            setSubmitCount(submitCount + 1); // 增加提交计数
+            setSubmitCount(submitCount + 1); // 增加提交次數
         } catch (error) {
-            setError("生成項目過程中發生錯誤。");
+            onErrorChange("生成項目過程中發生錯誤。");
+            setIsButtonDisabled(false); // 發生錯誤時重新啟動按鈕
         }
-        setIsLoading(false);
+        onLoadingChange(false);
     };
 
     const handleTargetAudienceChange = (e, category) => {
@@ -108,6 +120,7 @@ const ProductForm = ({ onImagesGenerated, formData, onFormDataChange }) => {
                 onChange={(e) => setProductName(e.target.value)} 
                 placeholder="輸入產品名稱" 
                 required
+                disabled={!imageSelected} // 選取圖片前禁用
             />
             <h2>產品描述 <span className="required">*</span></h2>
             <input 
@@ -116,38 +129,33 @@ const ProductForm = ({ onImagesGenerated, formData, onFormDataChange }) => {
                 onChange={(e) => setProductDescribe(e.target.value)} 
                 placeholder="輸入產品描述"
                 required
+                disabled={!imageSelected} // 選取圖片前禁用
             />
             <h2>投放定向 <span className="required">*</span></h2>
             <div className="select-wrapper">
                 <h3>性別</h3>
-                <select onChange={(e) => handleTargetAudienceChange(e, 'gender')} value={selectedAudiences.gender} required>
+                <select onChange={(e) => handleTargetAudienceChange(e, 'gender')} value={selectedAudiences.gender} required disabled={!imageSelected}>
                     <option value="">選擇性別</option>
                     {Object.entries(targetOptions.gender || {}).map(([key, value]) => (
                         <option key={key} value={value}>{value}</option>
                     ))}
                 </select>
                 <h3>年齡</h3>
-                <select onChange={(e) => handleTargetAudienceChange(e, 'age')} value={selectedAudiences.age} required>
+                <select onChange={(e) => handleTargetAudienceChange(e, 'age')} value={selectedAudiences.age} required disabled={!imageSelected}>
                     <option value="">選擇年齡</option>
                     {Object.entries(targetOptions.age || {}).map(([key, value]) => (
                         <option key={key} value={value}>{value}</option>
                     ))}
                 </select>
-                <h3>職業</h3>
-                <select onChange={(e) => handleTargetAudienceChange(e, 'occupation')} value={selectedAudiences.occupation} required>
-                    <option value="">選擇職業</option>
-                    {Object.entries(targetOptions.occupation || {}).map(([key, value]) => (
-                        <option key={key} value={value}>{value}</option>
-                    ))}
-                </select>
                 <h3>興趣</h3>
-                <select onChange={(e) => handleTargetAudienceChange(e, 'interest')} value={selectedAudiences.interest} required>
+                <select onChange={(e) => handleTargetAudienceChange(e, 'interest')} value={selectedAudiences.interest} required disabled={!imageSelected}>
                     <option value="">選擇興趣</option>
                     {Object.entries(targetOptions.interest || {}).map(([key, value]) => (
                         <option key={key} value={value}>{value}</option>
                     ))}
                 </select>
             </div>
+            {!imageSelected && <p className="image-upload-reminder">請先上傳圖片</p>}
             <h2>產品去背圖 <span className="required">*</span></h2>
             <button type="button" onClick={handleImageClick} className="upload-button">選擇圖片</button>
             <input 
@@ -159,7 +167,9 @@ const ProductForm = ({ onImagesGenerated, formData, onFormDataChange }) => {
                 required
             />
             {productImage && <img src={URL.createObjectURL(productImage)} alt="Product" className="product-image" />}
-            <button onClick={handleSubmit} className="submit-button">生成圖片與文案</button>
+            <div className="button-container">
+                <button onClick={handleSubmit} className="submit-button" disabled={isButtonDisabled || !imageSelected}>生成圖片與文案</button>
+            </div>
             {isLoading && <p className="loading">Loading...</p>}
             {error && <p className="error">{error}</p>}
         </div>
@@ -170,6 +180,14 @@ ProductForm.propTypes = {
     onImagesGenerated: PropTypes.func.isRequired,
     formData: PropTypes.object.isRequired,
     onFormDataChange: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    onLoadingChange: PropTypes.func.isRequired,
+    onErrorChange: PropTypes.func.isRequired,
+    onImageUpload: PropTypes.func.isRequired,
+    uploadedImageFilename: PropTypes.string.isRequired,
+    timestamp: PropTypes.string.isRequired,
+    error: PropTypes.string.isRequired,
+    onProductImageChange: PropTypes.func.isRequired
 };
 
 export default ProductForm;

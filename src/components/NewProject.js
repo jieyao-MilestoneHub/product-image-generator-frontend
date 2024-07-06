@@ -11,10 +11,15 @@ const NewProject = ({ project }) => {
     const [images, setImages] = useState([]);
     const [currentStep, setCurrentStep] = useState(0);
     const [chartData, setChartData] = useState(null);
-    const [formData, setFormData] = useState({}); // 儲存表單數據 (防止切換步驟失去已填寫數據)
+    const [formData, setFormData] = useState({});
     const [audience, setAudience] = useState("");
     const [shortText, setShortText] = useState("");
     const [longText, setLongText] = useState("");
+    const [uploadedImageFilename, setUploadedImageFilename] = useState('');
+    const [timestamp, setTimestamp] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [productImage, setProductImage] = useState(null); // 添加 productImage 状态
 
     useEffect(() => {
         const handleBeforeUnload = (event) => {
@@ -47,6 +52,13 @@ const NewProject = ({ project }) => {
 
     const handleStepChange = (step) => {
         setCurrentStep(step);
+        if (step === 1) {
+            // 重置表單數據
+            setFormData({});
+            setUploadedImageFilename('');
+            setTimestamp('');
+            setProductImage(null);
+        }
     };
 
     const handleChartData = (data) => {
@@ -57,6 +69,23 @@ const NewProject = ({ project }) => {
         setFormData(newFormData);
     }, []);
 
+    const handleLoadingChange = useCallback((loadingStatus) => {
+        setIsLoading(loadingStatus);
+    }, []);
+
+    const handleErrorChange = useCallback((errorMessage) => {
+        setError(errorMessage);
+    }, []);
+
+    const handleImageUpload = (filename, timestamp) => {
+        setUploadedImageFilename(filename);
+        setTimestamp(timestamp);
+    };
+
+    const handleProductImageChange = (image) => {
+        setProductImage(image);
+    };
+
     return (
         <div className="new-project">
             <Steps currentStep={currentStep} onStepChange={handleStepChange} />
@@ -64,7 +93,7 @@ const NewProject = ({ project }) => {
                 {currentStep === 0 && (
                     <div className="upload-csv-container">
                         <UploadCSV onChartData={handleChartData} />
-                        {chartData && chartData.gender_data && chartData.age_data && chartData.occupation_data && chartData.interest_data && (
+                        {chartData && chartData.gender_data && chartData.age_data && chartData.interest_data && (
                             <AnalyzeCSV data={chartData} />
                         )}
                     </div>
@@ -75,16 +104,28 @@ const NewProject = ({ project }) => {
                             onImagesGenerated={handleProjectsGenerated} 
                             formData={formData} 
                             onFormDataChange={handleFormDataChange} 
+                            isLoading={isLoading}
+                            onLoadingChange={handleLoadingChange}
+                            onErrorChange={handleErrorChange}
+                            onImageUpload={handleImageUpload}
+                            onProductImageChange={handleProductImageChange} // 新增这个回调
+                            uploadedImageFilename={uploadedImageFilename}
+                            timestamp={timestamp}
+                            error={error}
                         />
                     </div>
                 )}
                 {currentStep === 2 && (
                     <div className="generated-images-container">
                         <GeneratedItem 
+                        // 傳遞各個參數
                             images={images} 
+                            product_name={formData.productName} 
+                            product_description={formData.productDescribe} 
                             audience={audience} 
                             shortText={shortText} 
                             longText={longText} 
+                            productImage={productImage}
                         />
                     </div>
                 )}

@@ -1,38 +1,34 @@
 .analyze-csv {
-    padding: 20px;
-    background-color: #ffffff; /* 白色背景 */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    margin-top: 20px;
-}
-
-.analyze-csv h2 {
-    font-size: 24px;
-    color: #333333;
-    margin-bottom: 20px;
+    text-align: center;
+    margin: 20px auto;
+    max-width: 800px;
 }
 
 .chart-wrapper {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.row {
+    display: flex;
+    width: 100%;
     gap: 20px;
 }
 
 .chart-item {
-    flex: 1 1 45%;
-    max-width: 45%;
-    background-color: #ffffff;
-    padding: 10px;
+    background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    flex: 1;
 }
 
-.chart-item h3 {
-    font-size: 20px;
-    color: #333333;
-    margin-bottom: 10px;
+.half-width {
+    width: 50%;
 }
 
-.chart-item canvas {
-    max-width: 100%;
+.full-width {
+    width: calc(100% - 20px);
 }

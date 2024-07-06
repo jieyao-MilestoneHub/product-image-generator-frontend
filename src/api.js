@@ -27,7 +27,7 @@ export const uploadImage = async (imageFile) => {
                 'Content-Type': 'multipart/form-data'
             }
         });
-        return response.data; // 確保返回的數據包含 filename 和 timestamp
+        return response.data;
     } catch (error) {
         handleApiError(error);
     }
@@ -37,7 +37,7 @@ export const generateProduct = async (productName, productDescribe, selectedAudi
     const formData = new FormData();
     formData.append('product_name', productName);
     formData.append('product_describe', productDescribe);
-    formData.append('target_audience', `${selectedAudiences.gender},${selectedAudiences.age},${selectedAudiences.occupation},${selectedAudiences.interest}`);
+    formData.append('target_audience', `${selectedAudiences.gender},${selectedAudiences.age},${selectedAudiences.interest}`);
     formData.append('product_image_filename', uploadedImageFilename);
     formData.append('timestamp', timestamp);
 
