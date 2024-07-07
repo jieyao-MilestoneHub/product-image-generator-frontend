@@ -1,5 +1,5 @@
 body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Roboto', Helvetica, Arial, sans-serif;
     background-color: #f4f4f9;
     color: #333;
     margin: 0;
@@ -33,10 +33,10 @@ body {
 .generated-images-container {
     width: 100%;
     max-width: 800px;
-    padding: 20px;
+    padding: 30px;
     background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
 
@@ -49,32 +49,32 @@ body {
 
 .previous-button,
 .next-button {
-    padding: 10px 20px;
+    padding: 12px 24px;
     font-size: 16px;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .previous-button {
-    background-color: #3498db; /* 藍色 */
+    background: linear-gradient(45deg, #3498db, #2980b9); /* 漸變藍色 */
     color: white;
 }
 
 .previous-button:hover {
-    background-color: #2980b9; /* 深藍色 */
+    background: linear-gradient(45deg, #2980b9, #3498db); /* 深藍漸變 */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .next-button {
-    background-color: #2ecc71; /* 綠色 */
+    background: linear-gradient(45deg, #2ecc71, #27ae60); /* 漸變綠色 */
     color: white;
 }
 
 .next-button:hover {
-    background-color: #27ae60; /* 深綠色 */
+    background: linear-gradient(45deg, #27ae60, #2ecc71); /* 深綠漸變 */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 

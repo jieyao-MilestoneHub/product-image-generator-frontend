@@ -26,9 +26,18 @@ body {
 /* 圖片網格容器，使用Flexbox佈局，並允許水平滾動 */
 .image-grid {
     display: flex;
+    flex-direction: column;
     gap: 30px;
-    overflow-x: auto; /* 添加水平滾動條 */
-    padding-bottom: 20px; /* 給滾動條一些空間 */
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.image-scroll-container {
+    display: flex;
+    gap: 30px;
+    overflow-x: auto;
+    padding-bottom: 20px;
+    max-width: 100%;
 }
 
 /* 單個圖片項的樣式，帶有陰影、圓角和過渡效果 */

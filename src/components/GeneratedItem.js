@@ -15,7 +15,7 @@ const customStyles = {
     },
 };
 
-const GeneratedImages = ({ images, product_name, product_description, audience, shortText, longText, productImageFilename, timestamp }) => {
+const GeneratedImages = ({ images, productName, productDescribe, selectedAudiences, shortText, longText, uploadedImageFilename, timestamp }) => {
     const [generatedImages, setGeneratedImages] = useState([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
@@ -24,20 +24,19 @@ const GeneratedImages = ({ images, product_name, product_description, audience, 
     const [shortTextState, setShortTextState] = useState(shortText);
     const [longTextState, setLongTextState] = useState(longText);
 
+    const imageSizes = ['300x250', '320x480', '970x250']; // 尺寸標籤
+
     useEffect(() => {
         if (images && images.length > 0) {
             console.log("Images received in GeneratedImages:", images);
-            setGeneratedImages(images);
+            setGeneratedImages(images.map(img => ({
+                imageUrl: getStaticUrl(img) // 確保路徑被正確處理
+            })));
         }
     }, [images]);
 
-    // Log generatedImages for debugging
-    console.log('generatedImages:', generatedImages);
-
-    const imageSizes = ['300x250', '320x480', '970x250']; // 尺寸標籤
-
     const openModal = (imageUrl) => {
-        setSelectedImage(imageUrl);
+        setSelectedImage(getStaticUrl(imageUrl));
         setModalIsOpen(true);
     };
 
@@ -50,8 +49,12 @@ const GeneratedImages = ({ images, product_name, product_description, audience, 
         setIsLoading(true);
         setError('');
         try {
-            const newImages = await generateProduct(product_name, product_description, audience, productImageFilename, timestamp);
-            setGeneratedImages(newImages.generated_images);
+            const newImages = await generateProduct(productName, productDescribe, selectedAudiences, uploadedImageFilename, timestamp);
+            console.log("New Images:", newImages);
+            // 確保從後端返回的圖片 URL 被正確處理並設置到狀態中
+            setGeneratedImages(newImages.generated_images.map(img => ({
+                imageUrl: getStaticUrl(img) // 將後端返回的路徑轉換為靜態URL
+            })));
             setShortTextState(newImages.short_ad);
             setLongTextState(newImages.long_ad);
         } catch (error) {
@@ -69,25 +72,25 @@ const GeneratedImages = ({ images, product_name, product_description, audience, 
             {generatedImages.length > 0 ? (
                 <>
                     <div className="image-grid">
-                        <div className="image-item" onClick={() => openModal(generatedImages[0].imageUrl)}>
-                            <img src={getStaticUrl(generatedImages[0].imageUrl)} alt={`Generated 0`} />
+                        <div className="image-item" onClick={() => openModal(uploadedImageFilename)}>
+                            <img src={getStaticUrl(uploadedImageFilename)} alt="Generated 0" />
                             <div className="image-label">產品去背圖</div>
                         </div>
-                        {generatedImages.slice(1, 4).map((item, index) => (
-                            <div key={index + 1} className="image-item" onClick={() => openModal(item.imageUrl)}>
-                                <img src={getStaticUrl(item.imageUrl)} alt={`Generated ${index + 1}`} />
+                    </div>
+                    <div className="image-scroll-container">
+                        {generatedImages.slice(0, 3).map((item, index) => (
+                            <div key={index} className="image-item" onClick={() => openModal(item.imageUrl)}>
+                                <img src={item.imageUrl} alt={`Generated ${index + 1}`} />
                                 <div className="image-label">{imageSizes[index] || '未知尺寸'}</div>
                             </div>
                         ))}
                     </div>
                     <div className="text-content">
-                        <p><strong>產品名稱:</strong> {product_name}</p>
-                        <p><strong>產品描述:</strong> {product_description}</p>
-                        <p><strong>受眾:</strong> {audience}</p>
-                        <p><strong>短文本:</strong></p>
-                        <p>{shortTextState}</p>
-                        <p><strong>長文本:</strong></p>
-                        <p>{longTextState}</p>
+                        <p><strong>產品名稱:</strong> {productName}</p>
+                        <p><strong>產品描述:</strong> {productDescribe}</p>
+                        <p><strong>受眾:</strong> {selectedAudiences.gender}, {selectedAudiences.age}, {selectedAudiences.interest}</p>
+                        <p><strong>短文本:</strong> {shortTextState}</p>
+                        <p><strong>長文本:</strong> {longTextState}</p>
                     </div>
                     <Modal
                         isOpen={modalIsOpen}
@@ -96,7 +99,7 @@ const GeneratedImages = ({ images, product_name, product_description, audience, 
                         contentLabel="Image Modal"
                     >
                         <button onClick={closeModal} className="close-button">關閉</button>
-                        {selectedImage && <img src={getStaticUrl(selectedImage)} alt="Selected" className="modal-image" />}
+                        {selectedImage && <img src={selectedImage} alt="Selected" className="modal-image" />}
                     </Modal>
                 </>
             ) : (

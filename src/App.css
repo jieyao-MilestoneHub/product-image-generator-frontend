@@ -1,16 +1,16 @@
 .app {
   display: flex;
   min-height: 100vh;
-  background-color: #f0f2f5; /* 淡灰色背景 */
+  background-color: #f0f2f5; /* 淺灰色背景 */
 }
 
 .main-content-wrapper {
   flex: 1;
-  margin-left: 250px; /* 预留侧边栏宽度 */
+  margin-left: 250px; /* 預留側邊欄寬度 */
   padding: 20px;
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* 顶部对齐内容 */
+  align-items: flex-start; /* 頂部對齊內容 */
 }
 
 .main-content {

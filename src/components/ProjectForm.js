@@ -57,7 +57,7 @@ const ProductForm = ({
         const imageFile = e.target.files[0];
         setProductImage(imageFile);
         setImageSelected(true); // 標記圖片已選擇
-        onProductImageChange(URL.createObjectURL(imageFile)); // 傳薪回調，傳遞 image 路徑
+        onProductImageChange(URL.createObjectURL(imageFile)); // 回調，傳遞 image 路徑
 
         onLoadingChange(true);
         try {

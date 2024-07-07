@@ -11,15 +11,22 @@ const NewProject = ({ project }) => {
     const [images, setImages] = useState([]);
     const [currentStep, setCurrentStep] = useState(0);
     const [chartData, setChartData] = useState(null);
-    const [formData, setFormData] = useState({});
-    const [audience, setAudience] = useState("");
+    const [formData, setFormData] = useState({
+        productName: '',
+        productDescribe: '',
+        selectedAudiences: {
+            gender: '',
+            age: '',
+            interest: ''
+        }
+    });
     const [shortText, setShortText] = useState("");
     const [longText, setLongText] = useState("");
     const [uploadedImageFilename, setUploadedImageFilename] = useState('');
     const [timestamp, setTimestamp] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
-    const [productImage, setProductImage] = useState(null); // 添加 productImage 状态
+    const [productImage, setProductImage] = useState(null);
 
     useEffect(() => {
         const handleBeforeUnload = (event) => {
@@ -37,11 +44,10 @@ const NewProject = ({ project }) => {
     const handleProjectsGenerated = (projectInfo) => {
         console.log("Generated project info:", projectInfo);
         if (projectInfo && projectInfo.generated_images) {
-            const imagesWithInfo = projectInfo.generated_images.map((image, index) => ({
+            const imagesWithInfo = projectInfo.generated_images.map((image) => ({
                 imageUrl: image,
             }));
             setImages(imagesWithInfo);
-            setAudience(projectInfo.target_audience);
             setShortText(projectInfo.short_ad);
             setLongText(projectInfo.long_ad);
             setCurrentStep(2); // 生成圖片後進入第三步驟
@@ -54,7 +60,15 @@ const NewProject = ({ project }) => {
         setCurrentStep(step);
         if (step === 1) {
             // 重置表單數據
-            setFormData({});
+            setFormData({
+                productName: '',
+                productDescribe: '',
+                selectedAudiences: {
+                    gender: '',
+                    age: '',
+                    interest: ''
+                }
+            });
             setUploadedImageFilename('');
             setTimestamp('');
             setProductImage(null);
@@ -108,7 +122,7 @@ const NewProject = ({ project }) => {
                             onLoadingChange={handleLoadingChange}
                             onErrorChange={handleErrorChange}
                             onImageUpload={handleImageUpload}
-                            onProductImageChange={handleProductImageChange} // 新增这个回调
+                            onProductImageChange={handleProductImageChange} 
                             uploadedImageFilename={uploadedImageFilename}
                             timestamp={timestamp}
                             error={error}
@@ -118,13 +132,14 @@ const NewProject = ({ project }) => {
                 {currentStep === 2 && (
                     <div className="generated-images-container">
                         <GeneratedItem 
-                        // 傳遞各個參數
                             images={images} 
-                            product_name={formData.productName} 
-                            product_description={formData.productDescribe} 
-                            audience={audience} 
+                            productName={formData.productName} 
+                            productDescribe={formData.productDescribe} 
+                            selectedAudiences={formData.selectedAudiences} 
                             shortText={shortText} 
                             longText={longText} 
+                            uploadedImageFilename={uploadedImageFilename}
+                            timestamp={timestamp}
                             productImage={productImage}
                         />
                     </div>
