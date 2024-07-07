@@ -1,7 +1,7 @@
 body {
     font-family: 'Roboto', Helvetica, Arial, sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
+    background-color: #000000; /* 黑色背景 */
+    color: #ffffff; /* 白色文字 */
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -12,7 +12,7 @@ body {
     flex-direction: column;
     min-height: 100vh;
     padding: 0 10%;
-    background-color: #f5f7fa;
+    background-color: #111111; /* 深黑色背景 */
 }
 
 .steps-container {
@@ -33,9 +33,9 @@ body {
     width: 100%;
     max-width: 800px;
     padding: 30px;
-    background-color: #fff;
+    background-color: #222222; /* 深灰色背景 */
     border-radius: 12px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     margin-bottom: 20px;
 }
 
@@ -54,27 +54,27 @@ body {
     border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .previous-button {
-    background: linear-gradient(45deg, #3498db, #2980b9); /* 漸變藍色 */
+    background: linear-gradient(45deg, #ff0000, #8B0000); /* 漸變红色 */
     color: white;
 }
 
 .previous-button:hover {
-    background: linear-gradient(45deg, #2980b9, #3498db); /* 深藍漸變 */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(45deg, #8B0000, #ff0000); /* 深红漸變 */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
 .next-button {
-    background: linear-gradient(45deg, #2ecc71, #27ae60); /* 漸變綠色 */
+    background: linear-gradient(45deg, #B22222, #ff0000); /* 漸變紅色 */
     color: white;
 }
 
 .next-button:hover {
-    background: linear-gradient(45deg, #27ae60, #2ecc71); /* 深綠漸變 */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(45deg, #ff0000, #B22222); /* 深红漸變 */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
 .footer {

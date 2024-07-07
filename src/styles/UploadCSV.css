@@ -1,14 +1,14 @@
 .upload-csv {
     padding: 20px;
-    background-color: #ffffff; /* 白色背景 */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #000000; /* 黑色背景 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     border-radius: 8px;
     text-align: center;
 }
 
 .upload-csv h2 {
     font-size: 24px;
-    color: #333333;
+    color: #ff0000; /* 红色标题 */
     margin-bottom: 20px;
 }
 
@@ -20,22 +20,22 @@
     display: inline-block;
     padding: 10px 20px;
     border-radius: 4px;
-    background-color: #3498db;
+    background-color: #ff0000; /* 红色背景 */
     color: #ffffff;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .upload-button:hover {
-    background-color: #2980b9;
+    background-color: #8B0000; /* 深红色背景 */
 }
 
 .loading {
     font-size: 14px;
-    color: #3498db;
+    color: #ff0000; /* 红色加载状态 */
 }
 
 .error {
     font-size: 14px;
-    color: #e74c3c;
+    color: #ff0000; /* 红色错误消息 */
 }

@@ -19,37 +19,44 @@
 }
 
 .step-number {
-    background: linear-gradient(135deg, #3498db, #2ecc71);
+    background: linear-gradient(135deg, #ff0000, #8B0000); /* 使用红色漸變 */
     color: white;
     border-radius: 50%;
     padding: 15px;
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    font-size: 18px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-size: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .step-description {
     margin-top: 10px;
     text-align: center;
     font-size: 16px;
-    color: #2c3e50;
+    color: #ffffff; /* 白色文字 */
+    transition: color 0.3s ease, font-weight 0.3s ease;
 }
 
 .arrow {
     font-size: 24px;
-    color: #2c3e50;
+    color: #ffffff; /* 白色文字 */
+    transition: color 0.3s ease;
 }
 
 .step.active .step-number {
-    background: linear-gradient(135deg, #1abc9c, #16a085);
+    background: linear-gradient(135deg, #8B0000, #ff0000); /* 反转红色漸變 */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
 }
 
 .step.active .step-description {
     font-weight: bold;
-    color: #1abc9c;
+    color: #ff0000; /* 使用更亮的红色 */
+}
+
+.step.active .arrow {
+    color: #ff0000; /* 使用更亮的红色 */
 }

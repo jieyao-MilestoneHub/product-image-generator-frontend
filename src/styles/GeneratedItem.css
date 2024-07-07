@@ -1,13 +1,12 @@
 body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
+    background-color: #000000; /* 黑色背景 */
+    color: #ffffff; /* 白色文字 */
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* 生成圖片的容器，帶有適當的填充和居中對齊 */
 .generated-images {
     padding: 40px;
     display: flex;
@@ -15,15 +14,13 @@ body {
     align-items: center;
 }
 
-/* 標題樣式，字體更大、更粗，顏色更突出 */
 .generated-images h2 {
     font-size: 2em;
     font-weight: bold;
-    color: #4a4a4a;
+    color: #ff0000; /* 红色标题 */
     margin-bottom: 20px;
 }
 
-/* 圖片網格容器，使用Flexbox佈局，並允許水平滾動 */
 .image-grid {
     display: flex;
     flex-direction: column;
@@ -40,29 +37,26 @@ body {
     max-width: 100%;
 }
 
-/* 單個圖片項的樣式，帶有陰影、圓角和過渡效果 */
 .image-item {
-    background-color: #ffffff;
+    background-color: #444444; /* 深灰色背景 */
     border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     overflow: hidden;
-    flex: 0 0 auto; /* 防止項目調整大小 */
-    max-width: 300px; /* 固定寬度，使佈局更整齊 */
+    flex: 0 0 auto;
+    max-width: 300px;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    cursor: pointer; /* 添加鼠標懸停效果 */
+    cursor: pointer;
 }
 
-/* 圖片項的懸停效果，增加陰影和縮放 */
 .image-item:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
 }
 
-/* 圖片樣式，適當的圓角和寬度 */
 .image-item img {
     width: 100%;
     height: auto;
@@ -70,7 +64,6 @@ body {
     border-bottom-right-radius: 0;
 }
 
-/* 圖片標籤的樣式 */
 .image-label {
     position: absolute;
     top: 5px;
@@ -82,56 +75,49 @@ body {
     font-size: 12px;
 }
 
-/* 文字內容的容器，適當的內邊距和背景顏色 */
 .text-content {
     margin-top: 20px;
     padding: 20px;
-    background: linear-gradient(135deg, #f9f9f9, #ffffff);
+    background: linear-gradient(135deg, #333333, #555555); /* 深灰色渐变 */
     border-radius: 12px;
     width: 100%;
     box-sizing: border-box;
-    max-width: 800px; /* 最大寬度，使文本區域更大 */
-    text-align: left; /* 文本左對齊，易於閱讀 */
+    max-width: 800px;
+    text-align: left;
 }
 
-/* 各段文本的樣式，設置間距和顏色 */
 .text-content p {
     margin: 10px 0;
     line-height: 1.6;
-    color: #555;
-    white-space: pre-line; /* 確保文本換行 */
+    color: #cccccc; /* 浅灰色文字 */
+    white-space: pre-line;
 }
 
-/* 強調文本的樣式，字體更大、更粗 */
 .text-content p strong {
     font-size: 1.2em;
-    color: #222;
+    color: #ffffff; /* 白色强調文字 */
 }
 
-/* 加載狀態樣式 */
 .loading {
     font-size: 1.2em;
-    color: #4a90e2;
+    color: #ff0000; /* 红色加载状态 */
 }
 
-/* 錯誤消息樣式 */
 .error {
     font-size: 1.2em;
-    color: #e94e77;
+    color: #ff0000; /* 红色错误消息 */
 }
 
-/* 模態框圖片樣式 */
 .modal-image {
     max-width: 100%;
     max-height: 100%;
 }
 
-/* 關閉按鈕樣式 */
 .close-button {
     position: absolute;
     top: 10px;
     right: 10px;
-    background: #e94e77;
+    background: #ff0000; /* 红色关闭按钮 */
     color: white;
     border: none;
     padding: 5px 10px;

@@ -1,13 +1,13 @@
 .footer {
-    background-color: #2c3e50; /* 深色背景 */
-    color: #ecf0f1; /* 白色文字 */
+    background-color: #000000; /* 黑色背景 */
+    color: #ffffff; /* 白色文字 */
     text-align: center;
     padding: 10px;
     position: fixed;
     width: 100%;
     bottom: 0;
     left: 0;
-    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* 陰影效果 */
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2); /* 陰影效果 */
 }
 
 .footer p {

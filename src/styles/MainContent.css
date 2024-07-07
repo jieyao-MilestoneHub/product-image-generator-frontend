@@ -4,9 +4,9 @@
     flex-direction: column;
     padding: 20px;
     overflow: auto;
-    background-color: #ffffff;
+    background-color: #000000; /* 黑色背景 */
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .section {
@@ -15,7 +15,7 @@
     flex-direction: column;
     padding: 20px;
     border-radius: 8px;
-    background-color: #f8f9fa;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    background-color: #222222; /* 深灰色背景 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     margin-bottom: 20px;
 }

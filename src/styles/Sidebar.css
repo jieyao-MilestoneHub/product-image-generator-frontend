@@ -1,7 +1,7 @@
 .sidebar {
     width: 250px;
-    background-color: #2c3e50; /* 深蓝色背景 */
-    color: #ecf0f1; /* 浅色字体 */
+    background-color: #000000; /* 黑色背景 */
+    color: #ffffff; /* 白色文字 */
     padding: 20px;
     height: 100vh;
     position: fixed; /* 固定位置 */
@@ -20,7 +20,7 @@
     margin-bottom: 20px;
     text-align: center;
     font-weight: 500;
-    color: #ecf0f1;
+    color: #ff0000; /* 红色标题 */
 }
 
 .sidebar ul {
@@ -38,7 +38,7 @@
     display: flex;
     align-items: center;
     padding: 10px 15px;
-    color: #ecf0f1;
+    color: #ffffff;
     text-decoration: none;
     border-radius: 4px;
     transition: background-color 0.3s ease, transform 0.3s ease;
@@ -50,12 +50,12 @@
 }
 
 .sidebar li.active a {
-    background-color: #34495e;
+    background-color: #222222; /* 深灰色背景 */
     transform: translateX(5px);
 }
 
 .sidebar li a:hover {
-    background-color: #34495e;
+    background-color: #222222; /* 深灰色背景 */
     transform: translateX(5px);
 }
 

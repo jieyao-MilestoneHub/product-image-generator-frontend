@@ -2,6 +2,11 @@
     text-align: center;
     margin: 20px auto;
     max-width: 800px;
+    background-color: #000000; /* 黑色背景 */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    color: #ffffff; /* 白色字体 */
 }
 
 .chart-wrapper {
@@ -18,11 +23,17 @@
 }
 
 .chart-item {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #444444; /* 深灰色背景 */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     padding: 20px;
     flex: 1;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chart-item:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
 }
 
 .half-width {
@@ -30,5 +41,11 @@
 }
 
 .full-width {
-    width: calc(100% - 20px);
+    width: 100%;
+}
+
+.chart-item h3 {
+    color: #ff0000; /* 红色标题 */
+    margin-bottom: 10px;
+    font-size: 20px;
 }

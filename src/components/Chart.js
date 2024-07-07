@@ -59,7 +59,7 @@ const Chart = ({ data, label }) => {
             y: {
                 title: {
                     display: true,
-                    text: '數量',
+                    text: '數量(%)',
                     font: {
                         size: 16,
                     },
