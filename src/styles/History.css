@@ -30,6 +30,17 @@ body {
     border-radius: 8px;
     margin-bottom: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.history-record:hover {
+    background-color: #333333;
+}
+
+.history-record .summary {
+    display: flex;
+    flex-direction: column;
 }
 
 .history-record h3 {
@@ -41,6 +52,10 @@ body {
     font-size: 16px;
     color: #cccccc; /* 浅灰色文字 */
     margin: 10px 0;
+}
+
+.details {
+    margin-top: 20px;
 }
 
 .history-images {

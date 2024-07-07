@@ -35,8 +35,16 @@ const GeneratedImages = ({ images, productName, productDescribe, selectedAudienc
         }
     }, [images]);
 
+    const cleanImageUrl = (url) => {
+        const basePath = 'http://localhost:8000/static/';
+        if (url.startsWith(basePath)) {
+            return url.substring(basePath.length);
+        }
+        return url;
+    };
+
     const openModal = (imageUrl) => {
-        setSelectedImage(getStaticUrl(imageUrl));
+        setSelectedImage(cleanImageUrl(getStaticUrl(imageUrl)));
         setModalIsOpen(true);
     };
 
