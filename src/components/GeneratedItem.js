@@ -30,7 +30,7 @@ const GeneratedImages = ({ images, productName, productDescribe, selectedAudienc
         if (images && images.length > 0) {
             console.log("Images received in GeneratedImages:", images);
             setGeneratedImages(images.map(img => ({
-                imageUrl: getStaticUrl(img) // 確保路徑被正確處理
+                imageUrl: getStaticUrl(img.imageUrl) // 確保路徑被正確處理
             })));
         }
     }, [images]);

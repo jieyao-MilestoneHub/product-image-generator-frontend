@@ -113,7 +113,6 @@ const NewProject = ({ project }) => {
                     </div>
                 )}
                 {currentStep === 1 && (
-                    <div className="project-form-container">
                         <ProjectForm 
                             onImagesGenerated={handleProjectsGenerated} 
                             formData={formData} 
@@ -127,7 +126,6 @@ const NewProject = ({ project }) => {
                             timestamp={timestamp}
                             error={error}
                         />
-                    </div>
                 )}
                 {currentStep === 2 && (
                     <div className="generated-images-container">
