@@ -1,3 +1,26 @@
+@keyframes logoAnimation {
+    0% {
+        clip-path: inset(0 62% 0 0); /* 第九个单词出现的位置 */
+        opacity: 0; /* 淡出 */
+    }
+    25% {
+        clip-path: inset(0 62% 0 0);
+        opacity: 1; /* 淡入 */
+    }
+    50% {
+        clip-path: inset(0 62% 0 0);
+        opacity: 1; /* 保持 */
+    }
+    75% {
+        clip-path: none;
+        visibility: visible;
+    }
+    100% {
+        clip-path: none;
+        visibility: visible;
+    }
+}
+
 .main-content {
     flex: 1;
     display: flex;
@@ -9,13 +32,24 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.section {
-    flex: 1;
+.logo {
     display: flex;
-    flex-direction: column;
-    padding: 20px;
-    border-radius: 8px;
-    background-color: #222222; /* 深灰色背景 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    margin-bottom: 20px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px; /* 減少底部空白 */
+    position: relative;
+    width: 300px; /* 固定寬度 */
+    height: 50px; /* 減少高度以減少上下留白 */
+    overflow: hidden;
+}
+
+.logo-image {
+    width: 100%;
+    height: 100%;
+    background-image: url('C:\Users\USER\Desktop\Develop\product-image-generator-frontend\public\images\cf_logo.png'); /* 使用相對於public的路徑 */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation: logoAnimation 2s ease-out forwards; /* 動畫效果 */
+    box-shadow: inset 0 0 0 1px white; /* 減少白色縫隙的寬度 */
 }

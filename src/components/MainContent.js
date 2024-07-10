@@ -7,6 +7,9 @@ import '../styles/MainContent.css';
 const MainContent = ({ project }) => {
     return (
         <div className="main-content">
+            <div className="logo">
+                <div className="logo-image"></div>
+            </div>
             <div className="section">
                 {project === "新增素材" && <NewProject project={project} />}
                 {project === "歷史紀錄" && <History project={project} />}

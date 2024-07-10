@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { getStaticUrl, generateProduct } from '../api';
 import '../styles/GeneratedItem.css';
 import Modal from 'react-modal';
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 
-// 自定義樣式用於模態框
+// Custom styles for the modal
 const customStyles = {
     content: {
         top: '50%',
@@ -24,13 +26,13 @@ const GeneratedImages = ({ images, productName, productDescribe, selectedAudienc
     const [shortTextState, setShortTextState] = useState(shortText);
     const [longTextState, setLongTextState] = useState(longText);
 
-    const imageSizes = ['300x250', '320x480', '970x250']; // 尺寸標籤
+    const imageSizes = ['300x250', '320x480', '336x280']; // Size labels
 
     useEffect(() => {
         if (images && images.length > 0) {
             console.log("Images received in GeneratedImages:", images);
             setGeneratedImages(images.map(img => ({
-                imageUrl: getStaticUrl(img.imageUrl) // 確保路徑被正確處理
+                imageUrl: getStaticUrl(img.imageUrl) // Ensure path is properly handled
             })));
         }
     }, [images]);
@@ -44,7 +46,12 @@ const GeneratedImages = ({ images, productName, productDescribe, selectedAudienc
     };
 
     const openModal = (imageUrl) => {
-        setSelectedImage(cleanImageUrl(getStaticUrl(imageUrl)));
+        console.log(imageUrl);
+        if (imageUrl.includes('http')) {
+            setSelectedImage(cleanImageUrl(getStaticUrl(imageUrl)));
+        } else {
+            setSelectedImage(getStaticUrl(imageUrl));
+        }
         setModalIsOpen(true);
     };
 
@@ -59,22 +66,63 @@ const GeneratedImages = ({ images, productName, productDescribe, selectedAudienc
         try {
             const newImages = await generateProduct(productName, productDescribe, selectedAudiences, uploadedImageFilename, timestamp);
             console.log("New Images:", newImages);
-            // 確保從後端返回的圖片 URL 被正確處理並設置到狀態中
+            // Ensure image URLs returned from the backend are properly handled and set to state
             setGeneratedImages(newImages.generated_images.map(img => ({
-                imageUrl: getStaticUrl(img) // 將後端返回的路徑轉換為靜態URL
+                imageUrl: getStaticUrl(img) // Convert backend paths to static URLs
             })));
             setShortTextState(newImages.short_ad);
             setLongTextState(newImages.long_ad);
         } catch (error) {
-            setError("生成新圖片時出錯。");
+            setError("Error generating new images.");
         }
         setIsLoading(false);
+    };
+
+    const downloadZip = async () => {
+        if (generatedImages.length === 0 && !uploadedImageFilename) {
+            setError('No data available for download.');
+            return;
+        }
+
+        const zip = new JSZip();
+        const folder = zip.folder(`generated_content_${timestamp}`);
+
+        // Add images to the folder within the zip
+        const imagePromises = generatedImages.map(async (item, index) => {
+            const response = await fetch(item.imageUrl);
+            const blob = await response.blob();
+            folder.file(`generated_image_${index + 1}.jpg`, blob);
+        });
+
+        if (uploadedImageFilename) {
+            const uploadedImageResponse = await fetch(getStaticUrl(uploadedImageFilename));
+            const uploadedImageBlob = await uploadedImageResponse.blob();
+            folder.file('uploaded_image.jpg', uploadedImageBlob);
+        }
+
+        // Add texts to the folder within the zip
+        const textContent = `
+Product Name: ${productName}
+Product Description: ${productDescribe}
+Audience: ${selectedAudiences.gender}, ${selectedAudiences.age}, ${selectedAudiences.interest}
+Short Text: ${shortTextState}
+Long Text: ${longTextState}
+        `;
+        folder.file('content.txt', textContent);
+
+        await Promise.all(imagePromises);
+
+        // Generate and download the zip file
+        zip.generateAsync({ type: 'blob' }).then((content) => {
+            saveAs(content, `generated_content_${timestamp}.zip`);
+        });
     };
 
     return (
         <div className="generated-images">
             <h2>生成素材圖片</h2>
             <button onClick={regenerateImages} disabled={isLoading}>重新生成</button>
+            <button onClick={downloadZip} disabled={generatedImages.length === 0 && !uploadedImageFilename}>下載所有內容</button>
             {isLoading && <p className="loading">加載中...</p>}
             {error && <p className="error">{error}</p>}
             {generatedImages.length > 0 ? (

@@ -113,6 +113,17 @@ const ProductForm = ({
 
     return (
         <div className="project-form">
+            <h2>產品去背圖 <span className="required">*</span></h2>
+            <button type="button" onClick={handleImageClick} className="upload-button">選擇圖片</button>
+            <input 
+                type="file" 
+                ref={fileInputRef} 
+                onChange={handleImageUpload} 
+                accept="image/*" 
+                style={{ display: 'none' }} 
+                required
+            />
+            {productImage && <img src={URL.createObjectURL(productImage)} alt="Product" className="product-image" />}
             <h2>產品名稱 <span className="required">*</span></h2>
             <input 
                 type="text" 
@@ -156,17 +167,6 @@ const ProductForm = ({
                 </select>
             </div>
             {!imageSelected && <p className="image-upload-reminder">請先上傳圖片</p>}
-            <h2>產品去背圖 <span className="required">*</span></h2>
-            <button type="button" onClick={handleImageClick} className="upload-button">選擇圖片</button>
-            <input 
-                type="file" 
-                ref={fileInputRef} 
-                onChange={handleImageUpload} 
-                accept="image/*" 
-                style={{ display: 'none' }} 
-                required
-            />
-            {productImage && <img src={URL.createObjectURL(productImage)} alt="Product" className="product-image" />}
             <div className="button-container">
                 <button onClick={handleSubmit} className="submit-button" disabled={isButtonDisabled || !imageSelected}>生成圖片與文案</button>
             </div>
