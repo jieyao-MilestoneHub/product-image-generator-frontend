@@ -15,7 +15,10 @@ const config = {
 
 const getConfig = () => {
     const env = process.env.REACT_APP_ENV || 'development';
-    return config[env];
+    return {
+        apiDomain: process.env.REACT_APP_API_DOMAIN || config[env].apiDomain,
+        staticDomain: process.env.REACT_APP_STATIC_DOMAIN || config[env].staticDomain
+    };
 };
 
 export default getConfig;

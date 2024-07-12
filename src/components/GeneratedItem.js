@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { getStaticUrl, generateProduct } from '../api';
+import { generateProduct } from '../api';
 import '../styles/GeneratedItem.css';
 import Modal from 'react-modal';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
+import getConfig from './../config';
 
-// Custom styles for the modal
+const { staticDomain } = getConfig();
+
 const customStyles = {
     content: {
         top: '50%',
@@ -32,13 +34,13 @@ const GeneratedImages = ({ images, productName, productDescribe, selectedAudienc
         if (images && images.length > 0) {
             console.log("Images received in GeneratedImages:", images);
             setGeneratedImages(images.map(img => ({
-                imageUrl: getStaticUrl(img.imageUrl) // Ensure path is properly handled
+                imageUrl: `${staticDomain}/${img.imageUrl}?t=${new Date().getTime()}` // Add timestamp to force reload
             })));
         }
     }, [images]);
 
     const cleanImageUrl = (url) => {
-        const basePath = 'http://localhost:8000/static/';
+        const basePath = `${staticDomain}/`;
         if (url.startsWith(basePath)) {
             return url.substring(basePath.length);
         }
@@ -48,9 +50,9 @@ const GeneratedImages = ({ images, productName, productDescribe, selectedAudienc
     const openModal = (imageUrl) => {
         console.log(imageUrl);
         if (imageUrl.includes('http')) {
-            setSelectedImage(cleanImageUrl(getStaticUrl(imageUrl)));
+            setSelectedImage(cleanImageUrl(`${staticDomain}/${imageUrl}`));
         } else {
-            setSelectedImage(getStaticUrl(imageUrl));
+            setSelectedImage(`${staticDomain}/${imageUrl}`);
         }
         setModalIsOpen(true);
     };
@@ -68,8 +70,9 @@ const GeneratedImages = ({ images, productName, productDescribe, selectedAudienc
             console.log("New Images:", newImages);
             // Ensure image URLs returned from the backend are properly handled and set to state
             setGeneratedImages(newImages.generated_images.map(img => ({
-                imageUrl: getStaticUrl(img) // Convert backend paths to static URLs
+                imageUrl: `${staticDomain}/${img}?t=${new Date().getTime()}` // Add timestamp to force reload
             })));
+            console.log(generatedImages);
             setShortTextState(newImages.short_ad);
             setLongTextState(newImages.long_ad);
         } catch (error) {
@@ -95,7 +98,7 @@ const GeneratedImages = ({ images, productName, productDescribe, selectedAudienc
         });
 
         if (uploadedImageFilename) {
-            const uploadedImageResponse = await fetch(getStaticUrl(uploadedImageFilename));
+            const uploadedImageResponse = await fetch(`${staticDomain}/${uploadedImageFilename}`);
             const uploadedImageBlob = await uploadedImageResponse.blob();
             folder.file('uploaded_image.jpg', uploadedImageBlob);
         }
@@ -129,7 +132,7 @@ Long Text: ${longTextState}
                 <>
                     <div className="image-grid">
                         <div className="image-item" onClick={() => openModal(uploadedImageFilename)}>
-                            <img src={getStaticUrl(uploadedImageFilename)} alt="Generated 0" />
+                            <img src={`${staticDomain}/${uploadedImageFilename}?t=${new Date().getTime()}`} alt="Generated 0" />
                             <div className="image-label">產品去背圖</div>
                         </div>
                     </div>
