@@ -1,20 +1,22 @@
+// ProjectForm.js
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { fetchTargetOptions, uploadImage, generateProduct } from '../api';
 import '../styles/ProductForm.css';
 
-const ProductForm = ({ 
-    onImagesGenerated, 
-    formData, 
-    onFormDataChange, 
-    isLoading, 
-    onLoadingChange, 
-    onErrorChange, 
-    onImageUpload, 
-    uploadedImageFilename, 
-    timestamp, 
+const ProjectForm = ({
+    onImagesGenerated,
+    formData,
+    onFormDataChange,
+    isLoading,
+    onLoadingChange,
+    onErrorChange,
+    onImageUpload,
+    uploadedImageFilename,
+    timestamp,
     error,
-    onProductImageChange
+    onProductImageChange,
+    productImage: initialProductImage
 }) => {
     const [productName, setProductName] = useState(formData.productName || '');
     const [productDescribe, setProductDescribe] = useState(formData.productDescribe || '');
@@ -23,11 +25,11 @@ const ProductForm = ({
         age: '',
         interest: ''
     });
-    const [productImage, setProductImage] = useState(formData.productImage || null);
+    const [productImage, setProductImage] = useState(initialProductImage);
     const [targetOptions, setTargetOptions] = useState({});
     const [submitCount, setSubmitCount] = useState(0);
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-    const [imageSelected, setImageSelected] = useState(false); // 標記圖片是否已按下上傳
+    const [imageSelected, setImageSelected] = useState(!!initialProductImage);
     const fileInputRef = useRef(null);
 
     useEffect(() => {
@@ -55,15 +57,18 @@ const ProductForm = ({
 
     const handleImageUpload = async (e) => {
         const imageFile = e.target.files[0];
-        setProductImage(imageFile);
+        const imageUrl = URL.createObjectURL(imageFile);
+        setProductImage(imageUrl);
         setImageSelected(true); // 標記圖片已選擇
-        onProductImageChange(URL.createObjectURL(imageFile)); // 回調，傳遞 image 路徑
-
+        onProductImageChange(imageUrl); // 回調，傳遞 image 路徑
+    
         onLoadingChange(true);
         try {
             const response = await uploadImage(imageFile);
             console.log('Image upload response:', response);
             onImageUpload(response.filename, response.timestamp);
+            // 存儲圖片 URL 到 localStorage
+            localStorage.setItem('productImage', imageUrl);
         } catch (error) {
             onErrorChange("上傳圖片失敗。");
         }
@@ -94,7 +99,7 @@ const ProductForm = ({
             setSubmitCount(submitCount + 1); // 增加提交次數
         } catch (error) {
             onErrorChange("生成項目過程中發生錯誤。");
-            setIsButtonDisabled(false); // 發生錯誤時重新啟動按鈕
+            setIsButtonDisabled(false); // 發生錯誤時重新啟用按鈕
         }
         onLoadingChange(false);
     };
@@ -115,29 +120,29 @@ const ProductForm = ({
         <div className="project-form">
             <h2>產品去背圖 <span className="required">*</span></h2>
             <button type="button" onClick={handleImageClick} className="upload-button">選擇圖片</button>
-            <input 
-                type="file" 
-                ref={fileInputRef} 
-                onChange={handleImageUpload} 
-                accept="image/*" 
-                style={{ display: 'none' }} 
+            <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleImageUpload}
+                accept="image/*"
+                style={{ display: 'none' }}
                 required
             />
-            {productImage && <img src={URL.createObjectURL(productImage)} alt="Product" className="product-image" />}
+            {productImage && <img src={productImage} alt="Product" className="product-image" />}
             <h2>產品名稱 <span className="required">*</span></h2>
-            <input 
-                type="text" 
-                value={productName} 
-                onChange={(e) => setProductName(e.target.value)} 
-                placeholder="輸入產品名稱" 
+            <input
+                type="text"
+                value={productName}
+                onChange={(e) => setProductName(e.target.value)}
+                placeholder="輸入產品名稱"
                 required
                 disabled={!imageSelected} // 選取圖片前禁用
             />
             <h2>產品描述 <span className="required">*</span></h2>
-            <input 
-                type="text" 
-                value={productDescribe} 
-                onChange={(e) => setProductDescribe(e.target.value)} 
+            <input
+                type="text"
+                value={productDescribe}
+                onChange={(e) => setProductDescribe(e.target.value)}
                 placeholder="輸入產品描述"
                 required
                 disabled={!imageSelected} // 選取圖片前禁用
@@ -170,13 +175,13 @@ const ProductForm = ({
             <div className="button-container">
                 <button onClick={handleSubmit} className="submit-button" disabled={isButtonDisabled || !imageSelected}>生成圖片與文案</button>
             </div>
-            {isLoading && <p className="loading">Loading...</p>}
+            {isLoading && <p className="loading">加載中...</p>}
             {error && <p className="error">{error}</p>}
         </div>
     );
 };
 
-ProductForm.propTypes = {
+ProjectForm.propTypes = {
     onImagesGenerated: PropTypes.func.isRequired,
     formData: PropTypes.object.isRequired,
     onFormDataChange: PropTypes.func.isRequired,
@@ -190,4 +195,4 @@ ProductForm.propTypes = {
     onProductImageChange: PropTypes.func.isRequired
 };
 
-export default ProductForm;
+export default ProjectForm;

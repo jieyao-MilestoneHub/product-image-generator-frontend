@@ -1,3 +1,4 @@
+// GeneratedItem.js
 import React, { useState, useEffect } from 'react';
 import { generateProduct } from '../api';
 import '../styles/GeneratedItem.css';
@@ -19,28 +20,38 @@ const customStyles = {
     },
 };
 
-const GeneratedImages = ({ images, productName, productDescribe, selectedAudiences, shortText, longText, uploadedImageFilename, timestamp }) => {
-    const [generatedImages, setGeneratedImages] = useState([]);
+const GeneratedImages = ({ images, productName, productDescribe, selectedAudiences, shortText, longText, uploadedImageFilename, timestamp, isGenerating }) => {
+    const [generatedImages, setGeneratedImages] = useState(() => {
+        const savedImages = localStorage.getItem('generatedImages');
+        return savedImages ? JSON.parse(savedImages) : [];
+    });
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
-    const [shortTextState, setShortTextState] = useState(shortText);
-    const [longTextState, setLongTextState] = useState(longText);
+    const [shortTextState, setShortTextState] = useState(() => localStorage.getItem('shortTextState') || shortText);
+    const [longTextState, setLongTextState] = useState(() => localStorage.getItem('longTextState') || longText);
 
     const imageSizes = ['300x250', '320x480', '336x280']; // Size labels
 
     useEffect(() => {
         if (images && images.length > 0) {
             console.log("Images received in GeneratedImages:", images);
-            setGeneratedImages(images.map(img => ({
-                imageUrl: `${staticDomain}/${img.imageUrl}?t=${new Date().getTime()}` // Add timestamp to force reload
-            })));
+            const newImages = images.map(img => ({
+                imageUrl: `${staticDomain}/static/${img.imageUrl}` // 添加 'static/' 前缀
+            }));
+            setGeneratedImages(newImages);
+            localStorage.setItem('generatedImages', JSON.stringify(newImages));
         }
     }, [images]);
 
+    useEffect(() => {
+        localStorage.setItem('shortTextState', shortTextState);
+        localStorage.setItem('longTextState', longTextState);
+    }, [shortTextState, longTextState]);
+
     const cleanImageUrl = (url) => {
-        const basePath = `${staticDomain}/`;
+        const basePath = `${staticDomain}/static/`;
         if (url.startsWith(basePath)) {
             return url.substring(basePath.length);
         }
@@ -69,9 +80,11 @@ const GeneratedImages = ({ images, productName, productDescribe, selectedAudienc
             const newImages = await generateProduct(productName, productDescribe, selectedAudiences, uploadedImageFilename, timestamp);
             console.log("New Images:", newImages);
             // Ensure image URLs returned from the backend are properly handled and set to state
-            setGeneratedImages(newImages.generated_images.map(img => ({
-                imageUrl: `${staticDomain}/${img}?t=${new Date().getTime()}` // Add timestamp to force reload
-            })));
+            const newGeneratedImages = newImages.generated_images.map(img => ({
+                imageUrl: `${staticDomain}/${img}` // 添加 'static/' 前缀
+            }));
+            setGeneratedImages(newGeneratedImages);
+            localStorage.setItem('generatedImages', JSON.stringify(newGeneratedImages));
             console.log(generatedImages);
             setShortTextState(newImages.short_ad);
             setLongTextState(newImages.long_ad);
@@ -124,15 +137,15 @@ Long Text: ${longTextState}
     return (
         <div className="generated-images">
             <h2>生成素材圖片</h2>
-            <button onClick={regenerateImages} disabled={isLoading}>重新生成</button>
-            <button onClick={downloadZip} disabled={generatedImages.length === 0 && !uploadedImageFilename}>下載所有內容</button>
+            <button onClick={regenerateImages} disabled={isLoading || isGenerating}>重新生成</button>
+            <button onClick={downloadZip} disabled={(generatedImages.length === 0 && !uploadedImageFilename) || isGenerating}>下載所有內容</button>
             {isLoading && <p className="loading">加載中...</p>}
             {error && <p className="error">{error}</p>}
             {generatedImages.length > 0 ? (
                 <>
                     <div className="image-grid">
                         <div className="image-item" onClick={() => openModal(uploadedImageFilename)}>
-                            <img src={`${staticDomain}/${uploadedImageFilename}?t=${new Date().getTime()}`} alt="Generated 0" />
+                            <img src={`${staticDomain}/${uploadedImageFilename}`} alt="Generated 0" />
                             <div className="image-label">產品去背圖</div>
                         </div>
                     </div>
