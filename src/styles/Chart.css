@@ -1,7 +1,11 @@
 .chart-container {
     margin-top: 20px;
+    position: relative;
+    width: 100%;
+    height: 170px; /* 固定高度，确保图表不随边界变化 */
 }
 
 .chart-container canvas {
-    max-width: 100%;
+    width: 100% !important;
+    height: 100% !important;
 }

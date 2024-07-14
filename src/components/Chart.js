@@ -22,6 +22,7 @@ const Chart = ({ data, label }) => {
 
     const chartOptions = {
         responsive: true,
+        maintainAspectRatio: false, // 确保图表不随边界改变
         animation: {
             duration: 2000,
         },
