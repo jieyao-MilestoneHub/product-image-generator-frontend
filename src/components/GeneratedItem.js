@@ -1,4 +1,3 @@
-// GeneratedItem.js
 import React, { useState, useEffect } from 'react';
 import { generateProduct } from '../api';
 import '../styles/GeneratedItem.css';
@@ -21,33 +20,33 @@ const customStyles = {
 };
 
 const GeneratedImages = ({ images, productName, productDescribe, selectedAudiences, shortText, longText, uploadedImageFilename, timestamp, isGenerating }) => {
-    const [generatedImages, setGeneratedImages] = useState(() => {
-        const savedImages = localStorage.getItem('generatedImages');
-        return savedImages ? JSON.parse(savedImages) : [];
-    });
+    const [generatedImages, setGeneratedImages] = useState([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
-    const [shortTextState, setShortTextState] = useState(() => localStorage.getItem('shortTextState') || shortText);
-    const [longTextState, setLongTextState] = useState(() => localStorage.getItem('longTextState') || longText);
+    const [shortTextState, setShortTextState] = useState(shortText);
+    const [longTextState, setLongTextState] = useState(longText);
 
     const imageSizes = ['300x250', '320x480', '336x280']; // Size labels
 
     useEffect(() => {
+        // 清除 sessionStorage 中的缓存
+        sessionStorage.clear();
+
         if (images && images.length > 0) {
             console.log("Images received in GeneratedImages:", images);
             const newImages = images.map(img => ({
-                imageUrl: `${staticDomain}/${img.imageUrl}` // 添加 'static/' 前缀
+                imageUrl: `${staticDomain}/${img.imageUrl}?timestamp=${Date.now()}` // 添加动态查询参数
             }));
             setGeneratedImages(newImages);
-            localStorage.setItem('generatedImages', JSON.stringify(newImages));
+            sessionStorage.setItem('generatedImages', JSON.stringify(newImages));
         }
     }, [images]);
 
     useEffect(() => {
-        localStorage.setItem('shortTextState', shortTextState);
-        localStorage.setItem('longTextState', longTextState);
+        sessionStorage.setItem('shortTextState', shortTextState);
+        sessionStorage.setItem('longTextState', longTextState);
     }, [shortTextState, longTextState]);
 
     const cleanImageUrl = (url) => {
@@ -61,7 +60,7 @@ const GeneratedImages = ({ images, productName, productDescribe, selectedAudienc
     const openModal = (imageUrl) => {
         console.log(imageUrl);
         if (imageUrl.includes('http')) {
-            setSelectedImage(cleanImageUrl(`${staticDomain}/${imageUrl}`));
+            setSelectedImage(cleanImageUrl(`${imageUrl}`));
         } else {
             setSelectedImage(`${staticDomain}/${imageUrl}`);
         }
@@ -81,10 +80,10 @@ const GeneratedImages = ({ images, productName, productDescribe, selectedAudienc
             console.log("New Images:", newImages);
             // Ensure image URLs returned from the backend are properly handled and set to state
             const newGeneratedImages = newImages.generated_images.map(img => ({
-                imageUrl: `${staticDomain}/${img}` // 添加 'static/' 前缀
+                imageUrl: `${staticDomain}/${img}?timestamp=${Date.now()}` // 添加动态查询参数
             }));
             setGeneratedImages(newGeneratedImages);
-            localStorage.setItem('generatedImages', JSON.stringify(newGeneratedImages));
+            sessionStorage.setItem('generatedImages', JSON.stringify(newGeneratedImages));
             console.log(generatedImages);
             setShortTextState(newImages.short_ad);
             setLongTextState(newImages.long_ad);
@@ -111,7 +110,7 @@ const GeneratedImages = ({ images, productName, productDescribe, selectedAudienc
         });
 
         if (uploadedImageFilename) {
-            const uploadedImageResponse = await fetch(`${staticDomain}/${uploadedImageFilename}`);
+            const uploadedImageResponse = await fetch(`${staticDomain}/${uploadedImageFilename.replace(/\\/g, '/')}`);
             const uploadedImageBlob = await uploadedImageResponse.blob();
             folder.file('uploaded_image.jpg', uploadedImageBlob);
         }
@@ -144,8 +143,8 @@ Long Text: ${longTextState}
             {generatedImages.length > 0 ? (
                 <>
                     <div className="image-grid">
-                        <div className="image-item" onClick={() => openModal(uploadedImageFilename)}>
-                            <img src={`${staticDomain}/${uploadedImageFilename}`} alt="Generated 0" />
+                        <div className="image-item" onClick={() => openModal(`${staticDomain}/${uploadedImageFilename}?timestamp=${Date.now()}`)}>
+                            <img src={`${staticDomain}/${uploadedImageFilename}?timestamp=${Date.now()}`} alt="Generated 0" />
                             <div className="image-label">產品去背圖</div>
                         </div>
                     </div>

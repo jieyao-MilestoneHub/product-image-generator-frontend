@@ -8,31 +8,25 @@ import Steps from './Steps';
 import '../styles/NewProject.css';
 
 const NewProject = ({ project }) => {
-    const [images, setImages] = useState(() => {
-        const savedImages = localStorage.getItem('generatedImages');
-        return savedImages ? JSON.parse(savedImages) : [];
-    });
+    const [images, setImages] = useState([]);
     const [currentStep, setCurrentStep] = useState(0);
     const [chartData, setChartData] = useState(null);
-    const [formData, setFormData] = useState(() => {
-        const savedData = localStorage.getItem('formData');
-        return savedData ? JSON.parse(savedData) : {
-            productName: '',
-            productDescribe: '',
-            selectedAudiences: {
-                gender: '',
-                age: '',
-                interest: ''
-            }
-        };
+    const [formData, setFormData] = useState({
+        productName: '',
+        productDescribe: '',
+        selectedAudiences: {
+            gender: '',
+            age: '',
+            interest: ''
+        }
     });
-    const [shortText, setShortText] = useState(() => localStorage.getItem('shortText') || "");
-    const [longText, setLongText] = useState(() => localStorage.getItem('longText') || "");
-    const [uploadedImageFilename, setUploadedImageFilename] = useState(() => localStorage.getItem('uploadedImageFilename') || '');
-    const [timestamp, setTimestamp] = useState(() => localStorage.getItem('timestamp') || '');
+    const [shortText, setShortText] = useState("");
+    const [longText, setLongText] = useState("");
+    const [uploadedImageFilename, setUploadedImageFilename] = useState('');
+    const [timestamp, setTimestamp] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
-    const [productImage, setProductImage] = useState(() => localStorage.getItem('productImage') || null);
+    const [productImage, setProductImage] = useState(null);
 
     useEffect(() => {
         const handleBeforeUnload = (event) => {
@@ -48,16 +42,10 @@ const NewProject = ({ project }) => {
     }, []);
 
     useEffect(() => {
-        localStorage.setItem('formData', JSON.stringify(formData));
-    }, [formData]);
-
-    useEffect(() => {
-        localStorage.setItem('generatedImages', JSON.stringify(images));
-        localStorage.setItem('shortText', shortText);
-        localStorage.setItem('longText', longText);
-        localStorage.setItem('uploadedImageFilename', uploadedImageFilename);
-        localStorage.setItem('timestamp', timestamp);
-    }, [images, shortText, longText, uploadedImageFilename, timestamp]);
+        // 清空 localStorage 和 sessionStorage
+        localStorage.clear();
+        sessionStorage.clear();
+    }, []);
 
     const handleProjectsGenerated = (projectInfo) => {
         console.log("Generated project info:", projectInfo);
@@ -101,7 +89,6 @@ const NewProject = ({ project }) => {
 
     const handleProductImageChange = (image) => {
         setProductImage(image);
-        localStorage.setItem('productImage', image);
     };
 
     return (

@@ -1,4 +1,3 @@
-// ProjectForm.js
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { fetchTargetOptions, uploadImage, generateProduct } from '../api';
@@ -67,8 +66,6 @@ const ProjectForm = ({
             const response = await uploadImage(imageFile);
             console.log('Image upload response:', response);
             onImageUpload(response.filename, response.timestamp);
-            // 存儲圖片 URL 到 localStorage
-            localStorage.setItem('productImage', imageUrl);
         } catch (error) {
             onErrorChange("上傳圖片失敗。");
         }
