@@ -38,7 +38,7 @@ const GeneratedImages = ({ images, productName, productDescribe, selectedAudienc
         if (images && images.length > 0) {
             console.log("Images received in GeneratedImages:", images);
             const newImages = images.map(img => ({
-                imageUrl: `${staticDomain}/static/${img.imageUrl}` // 添加 'static/' 前缀
+                imageUrl: `${staticDomain}/${img.imageUrl}` // 添加 'static/' 前缀
             }));
             setGeneratedImages(newImages);
             localStorage.setItem('generatedImages', JSON.stringify(newImages));
